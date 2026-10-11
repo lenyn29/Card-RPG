@@ -1,0 +1,212 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Cinzel', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  user-select: none;
+}
+
+body {
+  background-color: #0b090a;
+  color: #e5e5e5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.game-shell {
+  width: 100%;
+  max-width: 430px;
+  height: 100dvh;
+  background: linear-gradient(180deg, #161214 0%, #0b090a 100%);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-left: 2px solid #33272a;
+  border-right: 2px solid #33272a;
+}
+
+/* CABECERA DE COMBATE */
+.battle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: rgba(22, 18, 20, 0.95);
+  border-bottom: 2px solid #4a3b42;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+  z-index: 10;
+}
+
+.entity-status {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.avatar-frame {
+  width: 42px;
+  height: 42px;
+  background: #231b1e;
+  border: 2px solid #d4af37; /* Borde dorado medieval */
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
+.avatar-frame.enemy {
+  border-color: #8b0000; /* Rojo sangre para enemigos */
+  box-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+}
+
+.bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bar-container.text-right { text-align: right; }
+
+.status-name { font-size: 0.75rem; font-weight: bold; color: #d4af37; text-transform: uppercase; }
+
+.hp-bar {
+  width: 90px;
+  height: 8px;
+  background: #2a2225;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #4a3b42;
+}
+
+.hp-fill { height: 100%; background: #22c55e; transition: width 0.3s ease; }
+.hp-fill.enemy { background: #dc2626; }
+
+.dungeon-info { text-align: center; }
+.act-label { font-size: 0.6rem; color: #a18a92; letter-spacing: 1px; display: block; }
+.node-title { font-size: 0.85rem; color: #f3e8ee; font-weight: bold; }
+
+/* ÁREA DE COMBATE */
+.battle-arena {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 16px;
+}
+
+.enemy-intent-box {
+  background: rgba(139, 0, 0, 0.2);
+  border: 1px solid rgba(139, 0, 0, 0.5);
+  padding: 6px 14px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: #fca5a5;
+  margin-bottom: 20px;
+  animation: pulseIntent 2s infinite alternate;
+}
+
+@keyframes pulseIntent {
+  0% { opacity: 0.8; }
+  100% { opacity: 1; transform: scale(1.02); }
+}
+
+.enemy-stage-visual { position: relative; display: flex; justify-content: center; align-items: center; }
+.monster-card-placeholder {
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, #2a1f24 0%, #110e10 80%);
+  border: 2px solid #5c4750;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  box-shadow: 0 0 30px rgba(0,0,0,0.9), inset 0 0 15px rgba(139,0,0,0.4);
+}
+
+/* PIE DE PÁGINA Y MANO DE CARTAS */
+.battle-footer {
+  background: rgba(15, 12, 14, 0.98);
+  border-top: 2px solid #4a3b42;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: env(safe-area-inset-bottom, 12px);
+}
+
+.player-hud-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.energy-orb {
+  background: #1f171b;
+  border: 2px solid #3b82f6;
+  color: #60a5fa;
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+
+.btn-end-turn {
+  background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+  color: #fff;
+  border: 1px solid #f87171;
+  padding: 6px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.78rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(185, 28, 28, 0.4);
+}
+
+.cards-hand-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  min-height: 135px;
+  perspective: 1000px;
+}
+
+/* ESTILO DE CARTA MEDIEVAL */
+.game-card {
+  width: 85px;
+  height: 125px;
+  background: linear-gradient(135deg, #231b1e 0%, #161214 100%);
+  border: 2px solid #d4af37;
+  border-radius: 10px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+  position: relative;
+}
+
+.game-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 12px 24px rgba(212, 175, 55, 0.3);
+  z-index: 20;
+}
+
+.card-top { display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; font-weight: bold; }
+.card-cost { background: #3b82f6; color: #fff; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.card-title { font-size: 0.68rem; color: #f3e8ee; text-align: center; font-weight: bold; }
+.card-art { font-size: 1.5rem; text-align: center; margin: 4px 0; }
+.card-desc { font-size: 0.55rem; color: #c0b2b8; text-align: center; line-height: 1.1; }

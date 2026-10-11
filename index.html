@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Card RPG: Fantasía Oscura</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#161214">
+</head>
+<body>
+  <div class="game-shell">
+    
+    <!-- CABECERA DEL COMBATE (ESTADÍSTICAS) -->
+    <header class="battle-header">
+      <div class="entity-status player-status">
+        <div class="avatar-frame">🛡️</div>
+        <div class="bar-container">
+          <span class="status-name">Héroe</span>
+          <div class="hp-bar"><div class="hp-fill" id="player-hp-fill" style="width: 100%;"></div></div>
+          <small><span id="player-hp">80</span> / 80 HP</small>
+        </div>
+      </div>
+
+      <div class="dungeon-info">
+        <span class="act-label">ACTO I</span>
+        <h3 class="node-title">Catacumbas</h3>
+      </div>
+
+      <div class="entity-status enemy-status">
+        <div class="bar-container text-right">
+          <span class="status-name">Orco Esqueleto</span>
+          <div class="hp-bar enemy"><div class="hp-fill enemy" id="enemy-hp-fill" style="width: 100%;"></div></div>
+          <small><span id="enemy-hp">60</span> / 60 HP</small>
+        </div>
+        <div class="avatar-frame enemy">💀</div>
+      </div>
+    </header>
+
+    <!-- ÁREA CENTRAL DE COMBATE (ENEMIGO Y ACCIONES) -->
+    <main class="battle-arena">
+      <div class="enemy-intent-box">
+        <span class="intent-icon">⚔️</span>
+        <span id="enemy-intent-text">El enemigo se prepara para atacar (Daño: 12)</span>
+      </div>
+
+      <div class="enemy-stage-visual">
+        <div class="monster-card-placeholder">
+          <div class="monster-glow"></div>
+          <div class="monster-sprite">👹</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- MANO DE CARTAS Y CONTROLES DEL JUGADOR -->
+    <footer class="battle-footer">
+      <div class="player-hud-row">
+        <div class="energy-orb">
+          <span id="player-energy">3</span>/<span id="player-max-energy">3</span> ⚡
+        </div>
+        <button class="btn-end-turn" onclick="endTurn()">Terminar Turno</button>
+      </div>
+
+      <!-- CONTENEDOR DE LA MANO DE CARTAS -->
+      <div class="cards-hand-container" id="player-hand">
+        <!-- Las cartas se generan dinámicamente desde JavaScript -->
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js');
+    }
+  </script>
+</body>
+</html>
