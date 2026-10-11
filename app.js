@@ -8,7 +8,6 @@ let maxPlayerEnergy = 3;
 let specialCharges = 0;
 let enemyIntent = { type: 'attack', value: 12 };
 
-// POOL DE ENEMIGOS POKÉMON ALEATORIOS (POKÉAPI HD REPOSITORY)
 const enemyPool = [
   { name: 'Gastly', hp: 60, sprite: 'https://raw.githubusercontent.com/pokeapi/sprites/master/sprites/pokemon/other/official-artwork/92.png' },
   { name: 'Haunter', hp: 75, sprite: 'https://raw.githubusercontent.com/pokeapi/sprites/master/sprites/pokemon/other/official-artwork/93.png' },
@@ -39,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initGame() {
-  // SELECCIONAR ENEMIGO ALEATORIO
   currentEnemy = enemyPool[Math.floor(Math.random() * enemyPool.length)];
   enemyHp = currentEnemy.hp;
   maxEnemyHp = currentEnemy.hp;
@@ -69,7 +67,6 @@ function shuffle(array) {
   return array;
 }
 
-// TOGGLE CUADRÍCULA GUÍA 4X4
 function toggleGridGuide() {
   const guide = document.getElementById('grid-guide');
   guide.classList.toggle('hidden');
