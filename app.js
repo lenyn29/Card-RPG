@@ -8,6 +8,19 @@ let maxPlayerEnergy = 3;
 let specialCharges = 0;
 let enemyIntent = { type: 'attack', value: 12 };
 
+// POOL DE ENEMIGOS POKÉMON ALEATORIOS (POKÉAPI HD REPOSITORY)
+const enemyPool = [
+  { name: 'Gastly', hp: 60, sprite: 'https://raw.githubusercontent.com/pokeapi/sprites/master/sprites/pokemon/other/official-artwork/92.png' },
+  { name: 'Haunter', hp: 75, sprite: 'https://raw.githubusercontent.com/pokeapi/sprites/master/sprites/pokemon/other/official-artwork/93.png' },
+  { name: 'Gengar', hp: 90, sprite: 'https://raw.githubusercontent.com/pokeapi/sprites/master/sprites/pokemon/other/official-artwork/94.png' },
+  { name: 'Misdreavus', hp: 65, sprite: 'https://raw.githubusercontent.com/pokeapi/sprites/master/sprites/pokemon/other/official-artwork/200.png' },
+  { name: 'Duskull', hp: 70, sprite: 'https://raw.githubusercontent.com/pokeapi/sprites/master/sprites/pokemon/other/official-artwork/355.png' },
+  { name: 'Litwick', hp: 55, sprite: 'https://raw.githubusercontent.com/pokeapi/sprites/master/sprites/pokemon/other/official-artwork/607.png' },
+  { name: 'Sableye', hp: 80, sprite: 'https://raw.githubusercontent.com/pokeapi/sprites/master/sprites/pokemon/other/official-artwork/302.png' }
+];
+
+let currentEnemy = null;
+
 const initialDeck = [
   { id: '1', name: 'Slash', cost: 1, type: 'attack', value: 8, icon: 'fa-solid fa-hand-fist', desc: 'Ataque directo. Inflige 8 daño.' },
   { id: '2', name: 'Slash', cost: 1, type: 'attack', value: 8, icon: 'fa-solid fa-hand-fist', desc: 'Ataque directo. Inflige 8 daño.' },
@@ -26,14 +39,24 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initGame() {
+  // SELECCIONAR ENEMIGO ALEATORIO
+  currentEnemy = enemyPool[Math.floor(Math.random() * enemyPool.length)];
+  enemyHp = currentEnemy.hp;
+  maxEnemyHp = currentEnemy.hp;
+
+  document.getElementById('enemy-name').textContent = currentEnemy.name;
+  document.getElementById('monster-sprite').src = currentEnemy.sprite;
+  document.getElementById('enemy-max-hp').textContent = maxEnemyHp;
+
   drawPile = shuffle([...initialDeck]);
   discardPile = [];
   currentHand = [];
   playerHp = maxPlayerHp;
-  enemyHp = maxEnemyHp;
   playerArmor = 0;
   specialCharges = 0;
   playerEnergy = maxPlayerEnergy;
+
+  updateIntent();
   updateUI();
   startTurn();
 }
@@ -46,7 +69,12 @@ function shuffle(array) {
   return array;
 }
 
-// FUNCIÓN DE PANTALLA COMPLETA Y BLOQUEO DE BARRA MÓVIL
+// TOGGLE CUADRÍCULA GUÍA 4X4
+function toggleGridGuide() {
+  const guide = document.getElementById('grid-guide');
+  guide.classList.toggle('hidden');
+}
+
 function toggleFullScreen() {
   const doc = window.document;
   const docEl = doc.documentElement;
@@ -57,13 +85,10 @@ function toggleFullScreen() {
   if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
     if (requestFS) {
       requestFS.call(docEl).then(() => {
-        // Bloquear orientación en vertical si el navegador lo permite
         if (screen.orientation && screen.orientation.lock) {
           screen.orientation.lock('portrait').catch(() => {});
         }
-      }).catch(err => {
-        showToast("Pantalla completa no disponible.");
-      });
+      }).catch(() => {});
     }
   } else {
     if (exitFS) {
@@ -78,6 +103,17 @@ function showToast(message, duration = 1500) {
   toastText.textContent = message;
   toast.classList.remove('hidden');
   setTimeout(() => toast.classList.add('hidden'), duration);
+}
+
+function updateIntent() {
+  const intents = [
+    { type: 'attack', value: 10, text: 'Ataque: 10' },
+    { type: 'attack', value: 14, text: 'Ataque: 14' },
+    { type: 'defense', value: 8, text: 'Escudo: 8' }
+  ];
+  enemyIntent = intents[Math.floor(Math.random() * intents.length)];
+  const intentEl = document.getElementById('enemy-intent-val');
+  if (intentEl) intentEl.textContent = enemyIntent.value;
 }
 
 function inspectIntent() {
@@ -114,7 +150,6 @@ function updateUI() {
   document.getElementById('deck-count').textContent = drawPile.length;
   document.getElementById('discard-count').textContent = discardPile.length;
 
-  // Actualización del Orbe Especial (Furia)
   const specialOrb = document.getElementById('special-orb');
   const specialChargesText = document.getElementById('special-charges');
   specialChargesText.textContent = `${specialCharges}/3`;
@@ -165,7 +200,6 @@ function playCard(index) {
   if (card.type === 'attack') {
     enemyHp -= card.value;
     if (enemyHp < 0) enemyHp = 0;
-    // Carga de Ataque Especial al jugar cartas de ataque
     if (specialCharges < 3) specialCharges++;
   } else if (card.type === 'defense') {
     playerArmor += card.value;
@@ -179,7 +213,7 @@ function playCard(index) {
   renderHand();
 
   if (enemyHp <= 0) {
-    showToast("¡Victoria!", 2000);
+    showToast("¡Victoria! Siguiente enemigo...", 2000);
     setTimeout(initGame, 2000);
   }
 }
@@ -191,7 +225,7 @@ function useSpecialAbility() {
   }
 
   specialCharges = 0;
-  enemyHp -= 24; // Ataque Devastador
+  enemyHp -= 24;
   if (enemyHp < 0) enemyHp = 0;
 
   showToast("💥 ¡FURIA DEVASTADORA! (24 Daño)", 2000);
@@ -210,21 +244,23 @@ function endTurn() {
   showToast("Turno Enemigo...", 1000);
 
   setTimeout(() => {
-    let damage = enemyIntent.value;
-    if (playerArmor > 0) {
-      if (playerArmor >= damage) {
-        playerArmor -= damage;
-        damage = 0;
-      } else {
-        damage -= playerArmor;
-        playerArmor = 0;
+    if (enemyIntent.type === 'attack') {
+      let damage = enemyIntent.value;
+      if (playerArmor > 0) {
+        if (playerArmor >= damage) {
+          playerArmor -= damage;
+          damage = 0;
+        } else {
+          damage -= playerArmor;
+          playerArmor = 0;
+        }
       }
+      playerHp -= damage;
+      if (playerHp < 0) playerHp = 0;
     }
 
-    playerHp -= damage;
-    if (playerHp < 0) playerHp = 0;
     playerArmor = 0;
-
+    updateIntent();
     updateUI();
 
     if (playerHp <= 0) {
@@ -239,4 +275,5 @@ function endTurn() {
 window.endTurn = endTurn;
 window.inspectIntent = inspectIntent;
 window.toggleFullScreen = toggleFullScreen;
+window.toggleGridGuide = toggleGridGuide;
 window.useSpecialAbility = useSpecialAbility;

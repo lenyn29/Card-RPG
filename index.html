@@ -5,31 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Card RPG: Clon Card Guardians</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="style.css?v=7">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4a7c59">
 </head>
 <body>
   <div class="game-shell unified-bg" id="game-shell">
     
-    <!-- BOTÓN SUPERIOR DE PANTALLA COMPLETA -->
-    <button class="fullscreen-btn" onclick="toggleFullScreen()" title="Pantalla Completa">
-      <i class="fa-solid fa-expand"></i>
-    </button>
+    <!-- CUADRÍCULA GUÍA 4X4 (ACTIVABLE / DESACTIVABLE) -->
+    <div class="grid-guide-4x4 hidden" id="grid-guide">
+      <div class="grid-cell">1,1</div><div class="grid-cell">1,2</div><div class="grid-cell">1,3</div><div class="grid-cell">1,4</div>
+      <div class="grid-cell">2,1</div><div class="grid-cell">2,2</div><div class="grid-cell">2,3</div><div class="grid-cell">2,4</div>
+      <div class="grid-cell">3,1</div><div class="grid-cell">3,2</div><div class="grid-cell">3,3</div><div class="grid-cell">3,4</div>
+      <div class="grid-cell">4,1</div><div class="grid-cell">4,2</div><div class="grid-cell">4,3</div><div class="grid-cell">4,4</div>
+    </div>
+
+    <!-- BOTONES DE HERRAMIENTAS SUPERIORES -->
+    <div class="top-tools-bar">
+      <button class="tool-btn" onclick="toggleGridGuide()" title="Alternar Cuadrícula Guía">
+        <i class="fa-solid fa-border-all"></i>
+      </button>
+      <button class="tool-btn" onclick="toggleFullScreen()" title="Pantalla Completa">
+        <i class="fa-solid fa-expand"></i>
+      </button>
+    </div>
 
     <!-- BANNER DE NOTIFICACIONES -->
     <div id="game-toast" class="toast-banner hidden">
       <span id="toast-text">¡Notificación!</span>
     </div>
 
-    <!-- MITAD SUPERIOR: SÓLO ENEMIGO (50% DEL ALTO) -->
+    <!-- MITAD SUPERIOR: ENEMIGO (50% DEL ALTO) -->
     <section class="top-half-enemy">
       <div class="enemy-status-floating">
-        <span class="enemy-name">Orco Salvaje</span>
+        <span class="enemy-name" id="enemy-name">Cargando...</span>
         <div class="hp-bar enemy">
           <div class="hp-fill enemy" id="enemy-hp-fill" style="width: 100%;"></div>
         </div>
-        <small><span id="enemy-hp">60</span> / 60 HP</small>
+        <small><span id="enemy-hp">60</span> / <span id="enemy-max-hp">60</span> HP</small>
       </div>
 
       <div class="intent-bubble-interactive" onclick="inspectIntent()">
@@ -38,23 +51,18 @@
       </div>
 
       <div class="monster-wrapper">
-        <img id="monster-sprite" src="https://raw.githubusercontent.com/pokeapi/sprites/master/sprites/pokemon/other/official-artwork/92.png" alt="Enemigo" class="monster-img">
+        <img id="monster-sprite" src="" alt="Enemigo" class="monster-img">
         <div class="shadow-platform"></div>
       </div>
     </section>
 
-    <!-- MITAD INFERIOR: SÓLO HÉROE (50% DEL ALTO) -->
+    <!-- MITAD INFERIOR: HÉROE (50% DEL ALTO) -->
     <section class="bottom-half-hero">
       
-      <!-- LÍNEA MEDIA DE HUD: ESPECIAL A LA IZQ (<), SALUD A LA DER (>) -->
+      <!-- LÍNEA MEDIA: SALUD A LA IZQ (<), ESPECIAL A LA DER (>) -->
       <div class="mid-hero-hud-row">
-        <!-- IZQUIERDA: ORBE DE ATAQUE ESPECIAL / FURIA -->
-        <div class="special-attack-orb" id="special-orb" onclick="useSpecialAbility()" title="Ataque Especial">
-          <i class="fa-solid fa-fire-flame-curved special-icon"></i>
-          <span class="special-count" id="special-charges">0/3</span>
-        </div>
-
-        <!-- DERECHA: BARRA DE VIDA Y ARMADURA DEL HÉROE -->
+        
+        <!-- IZQUIERDA: BARRA DE VIDA Y ARMADURA DEL HÉROE -->
         <div class="hero-card-guardians-hud">
           <div class="hero-portrait">
             <i class="fa-solid fa-helmet-safety"></i>
@@ -69,6 +77,13 @@
             <i class="fa-solid fa-shield-halved"></i> <span id="player-armor">0</span>
           </div>
         </div>
+
+        <!-- DERECHA: ORBE DE ATAQUE ESPECIAL / FURIA -->
+        <div class="special-attack-orb" id="special-orb" onclick="useSpecialAbility()" title="Ataque Especial">
+          <i class="fa-solid fa-fire-flame-curved special-icon"></i>
+          <span class="special-count" id="special-charges">0/3</span>
+        </div>
+
       </div>
 
       <!-- CONTROLES Y CARTAS -->
@@ -96,7 +111,7 @@
 
   </div>
 
-  <script src="app.js?v=6"></script>
+  <script src="app.js?v=7"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js');
