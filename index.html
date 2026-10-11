@@ -5,21 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Card RPG: Clon Card Guardians</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4a7c59">
 </head>
 <body>
-  <!-- CONTENEDOR PRINCIPAL CON EL FONDO UNIFICADO DE TODA LA PANTALLA -->
-  <div class="game-shell unified-bg">
+  <div class="game-shell unified-bg" id="game-shell">
     
-    <!-- BANNER DE NOTIFICACIONES (OCULTO POR DEFECTO) -->
+    <!-- BOTÓN SUPERIOR DE PANTALLA COMPLETA -->
+    <button class="fullscreen-btn" onclick="toggleFullScreen()" title="Pantalla Completa">
+      <i class="fa-solid fa-expand"></i>
+    </button>
+
+    <!-- BANNER DE NOTIFICACIONES -->
     <div id="game-toast" class="toast-banner hidden">
-      <span id="toast-text">¡Mensaje de juego!</span>
+      <span id="toast-text">¡Notificación!</span>
     </div>
 
-    <!-- ÁREA SUPERIOR (ENEMIGO) -->
-    <div class="top-battle-area">
+    <!-- MITAD SUPERIOR: SÓLO ENEMIGO (50% DEL ALTO) -->
+    <section class="top-half-enemy">
       <div class="enemy-status-floating">
         <span class="enemy-name">Orco Salvaje</span>
         <div class="hp-bar enemy">
@@ -34,60 +38,65 @@
       </div>
 
       <div class="monster-wrapper">
-        <img id="monster-sprite" src="https://raw.githubusercontent.com/pokeapi/sprites/master/sprites/pokemon/other/official-artwork/92.png" alt="Orco" class="monster-img">
+        <img id="monster-sprite" src="https://raw.githubusercontent.com/pokeapi/sprites/master/sprites/pokemon/other/official-artwork/92.png" alt="Enemigo" class="monster-img">
         <div class="shadow-platform"></div>
       </div>
-    </div>
+    </section>
 
-    <!-- ÁREA CENTRAL (HÉROE SOBRE LAS CARTAS) -->
-    <div class="mid-hero-area">
-      <div class="hero-card-guardians-hud">
-        <div class="hero-portrait">
-          <i class="fa-solid fa-helmet-safety"></i>
+    <!-- MITAD INFERIOR: SÓLO HÉROE (50% DEL ALTO) -->
+    <section class="bottom-half-hero">
+      
+      <!-- LÍNEA MEDIA DE HUD: ESPECIAL A LA IZQ (<), SALUD A LA DER (>) -->
+      <div class="mid-hero-hud-row">
+        <!-- IZQUIERDA: ORBE DE ATAQUE ESPECIAL / FURIA -->
+        <div class="special-attack-orb" id="special-orb" onclick="useSpecialAbility()" title="Ataque Especial">
+          <i class="fa-solid fa-fire-flame-curved special-icon"></i>
+          <span class="special-count" id="special-charges">0/3</span>
         </div>
-        <div class="hero-bars">
-          <div class="hp-bar hero">
-            <div class="hp-fill hero" id="player-hp-fill" style="width: 100%;"></div>
+
+        <!-- DERECHA: BARRA DE VIDA Y ARMADURA DEL HÉROE -->
+        <div class="hero-card-guardians-hud">
+          <div class="hero-portrait">
+            <i class="fa-solid fa-helmet-safety"></i>
           </div>
-          <small><span id="player-hp">80</span> / 80 HP</small>
-        </div>
-        <div class="hero-armor-badge">
-          <i class="fa-solid fa-shield-halved"></i> <span id="player-armor">0</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ÁREA INFERIOR (CARTAS Y HUD DE JUEGO) -->
-    <div class="bottom-action-area">
-      <div class="piles-energy-row">
-        <!-- Pila de Robo -->
-        <div class="deck-orb-pile" title="Mazo">
-          <i class="fa-solid fa-layer-group"></i> <span id="deck-count">0</span>
-        </div>
-
-        <!-- Orbe de Energía -->
-        <div class="energy-orb-centered">
-          <span id="player-energy">3</span>/<span id="player-max-energy">3</span>
-        </div>
-
-        <!-- Botón Terminar Turno -->
-        <button class="btn-ready-lists" onclick="endTurn()">Listo</button>
-
-        <!-- Pila de Descarte -->
-        <div class="discard-orb-pile" title="Descarte">
-          <i class="fa-solid fa-box-archive"></i> <span id="discard-count">0</span>
+          <div class="hero-bars">
+            <div class="hp-bar hero">
+              <div class="hp-fill hero" id="player-hp-fill" style="width: 100%;"></div>
+            </div>
+            <small><span id="player-hp">80</span> / 80 HP</small>
+          </div>
+          <div class="hero-armor-badge">
+            <i class="fa-solid fa-shield-halved"></i> <span id="player-armor">0</span>
+          </div>
         </div>
       </div>
 
-      <!-- MANO DE CARTAS (CON FONDO TRANSPARENTE) -->
-      <div class="cards-hand-viewport" id="player-hand">
-        <!-- Las cartas se generan dinámicamente -->
+      <!-- CONTROLES Y CARTAS -->
+      <div class="bottom-action-area">
+        <div class="piles-energy-row">
+          <div class="deck-orb-pile" title="Mazo">
+            <i class="fa-solid fa-layer-group"></i> <span id="deck-count">0</span>
+          </div>
+
+          <div class="energy-orb-centered">
+            <span id="player-energy">3</span>/<span id="player-max-energy">3</span>
+          </div>
+
+          <button class="btn-ready-lists" onclick="endTurn()">Listo</button>
+
+          <div class="discard-orb-pile" title="Descarte">
+            <i class="fa-solid fa-box-archive"></i> <span id="discard-count">0</span>
+          </div>
+        </div>
+
+        <div class="cards-hand-viewport" id="player-hand"></div>
       </div>
-    </div>
+
+    </section>
 
   </div>
 
-  <script src="app.js?v=5"></script>
+  <script src="app.js?v=6"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js');

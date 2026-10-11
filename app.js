@@ -5,6 +5,7 @@ let enemyHp = 60;
 let maxEnemyHp = 60;
 let playerEnergy = 3;
 let maxPlayerEnergy = 3;
+let specialCharges = 0;
 let enemyIntent = { type: 'attack', value: 12 };
 
 const initialDeck = [
@@ -31,6 +32,7 @@ function initGame() {
   playerHp = maxPlayerHp;
   enemyHp = maxEnemyHp;
   playerArmor = 0;
+  specialCharges = 0;
   playerEnergy = maxPlayerEnergy;
   updateUI();
   startTurn();
@@ -42,6 +44,32 @@ function shuffle(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
+}
+
+// FUNCIÓN DE PANTALLA COMPLETA Y BLOQUEO DE BARRA MÓVIL
+function toggleFullScreen() {
+  const doc = window.document;
+  const docEl = doc.documentElement;
+
+  const requestFS = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+  const exitFS = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+  if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+    if (requestFS) {
+      requestFS.call(docEl).then(() => {
+        // Bloquear orientación en vertical si el navegador lo permite
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('portrait').catch(() => {});
+        }
+      }).catch(err => {
+        showToast("Pantalla completa no disponible.");
+      });
+    }
+  } else {
+    if (exitFS) {
+      exitFS.call(doc);
+    }
+  }
 }
 
 function showToast(message, duration = 1500) {
@@ -86,6 +114,17 @@ function updateUI() {
   document.getElementById('deck-count').textContent = drawPile.length;
   document.getElementById('discard-count').textContent = discardPile.length;
 
+  // Actualización del Orbe Especial (Furia)
+  const specialOrb = document.getElementById('special-orb');
+  const specialChargesText = document.getElementById('special-charges');
+  specialChargesText.textContent = `${specialCharges}/3`;
+
+  if (specialCharges >= 3) {
+    specialOrb.classList.add('ready');
+  } else {
+    specialOrb.classList.remove('ready');
+  }
+
   const playerPct = Math.max(0, (playerHp / maxPlayerHp) * 100);
   const enemyPct = Math.max(0, (enemyHp / maxEnemyHp) * 100);
 
@@ -126,6 +165,8 @@ function playCard(index) {
   if (card.type === 'attack') {
     enemyHp -= card.value;
     if (enemyHp < 0) enemyHp = 0;
+    // Carga de Ataque Especial al jugar cartas de ataque
+    if (specialCharges < 3) specialCharges++;
   } else if (card.type === 'defense') {
     playerArmor += card.value;
   } else if (card.type === 'heal') {
@@ -139,6 +180,24 @@ function playCard(index) {
 
   if (enemyHp <= 0) {
     showToast("¡Victoria!", 2000);
+    setTimeout(initGame, 2000);
+  }
+}
+
+function useSpecialAbility() {
+  if (specialCharges < 3) {
+    showToast("¡Carga el poder jugando 3 cartas de ataque!", 1800);
+    return;
+  }
+
+  specialCharges = 0;
+  enemyHp -= 24; // Ataque Devastador
+  if (enemyHp < 0) enemyHp = 0;
+
+  showToast("💥 ¡FURIA DEVASTADORA! (24 Daño)", 2000);
+  updateUI();
+
+  if (enemyHp <= 0) {
     setTimeout(initGame, 2000);
   }
 }
@@ -164,8 +223,6 @@ function endTurn() {
 
     playerHp -= damage;
     if (playerHp < 0) playerHp = 0;
-
-    // Reseteo de armadura al final del turno enemigo (igual que Card Guardians)
     playerArmor = 0;
 
     updateUI();
@@ -181,3 +238,5 @@ function endTurn() {
 
 window.endTurn = endTurn;
 window.inspectIntent = inspectIntent;
+window.toggleFullScreen = toggleFullScreen;
+window.useSpecialAbility = useSpecialAbility;
