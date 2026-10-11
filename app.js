@@ -6,17 +6,18 @@ let maxEnemyHp = 60;
 let playerEnergy = 3;
 let maxPlayerEnergy = 3;
 
+// MAZO CON ICONOS VECTORIALES FONT AWESOME
 const initialDeck = [
-  { id: '1', name: 'Corte Oscuro', cost: 1, type: 'attack', value: 8, art: '🗡️', desc: 'Ataque veloz. Inflige 8 de daño.' },
-  { id: '2', name: 'Corte Oscuro', cost: 1, type: 'attack', value: 8, art: '🗡️', desc: 'Ataque veloz. Inflige 8 de daño.' },
-  { id: '3', name: 'Corte Oscuro', cost: 1, type: 'attack', value: 8, art: '🗡️', desc: 'Ataque veloz. Inflige 8 de daño.' },
-  { id: '4', name: 'Escudo Hierro', cost: 1, type: 'defense', value: 6, art: '🛡️', desc: 'Protección. +6 de Armadura.' },
-  { id: '5', name: 'Escudo Hierro', cost: 1, type: 'defense', value: 6, art: '🛡️', desc: 'Protección. +6 de Armadura.' },
-  { id: '6', name: 'Escudo Hierro', cost: 1, type: 'defense', value: 6, art: '🛡️', desc: 'Protección. +6 de Armadura.' },
-  { id: '7', name: 'Golpe Pesado', cost: 2, type: 'attack', value: 16, art: '🪓', desc: 'Ataque pesado. 16 daño.' },
-  { id: '8', name: 'Golpe Pesado', cost: 2, type: 'attack', value: 16, art: '🪓', desc: 'Ataque pesado. 16 daño.' },
-  { id: '9', name: 'Elixir Vida', cost: 1, type: 'heal', value: 6, art: '🧪', desc: 'Restablece 6 de vida.' },
-  { id: '10', name: 'Rayo Rúnico', cost: 2, type: 'attack', value: 18, art: '⚡', desc: 'Rayo místico. 18 daño.' }
+  { id: '1', name: 'Corte Oscuro', cost: 1, type: 'attack', value: 8, icon: 'fa-solid fa-hand-fist', desc: 'Ataque veloz. Inflige 8 de daño.' },
+  { id: '2', name: 'Corte Oscuro', cost: 1, type: 'attack', value: 8, icon: 'fa-solid fa-hand-fist', desc: 'Ataque veloz. Inflige 8 de daño.' },
+  { id: '3', name: 'Corte Oscuro', cost: 1, type: 'attack', value: 8, icon: 'fa-solid fa-hand-fist', desc: 'Ataque veloz. Inflige 8 de daño.' },
+  { id: '4', name: 'Escudo Hierro', cost: 1, type: 'defense', value: 6, icon: 'fa-solid fa-shield-halved', desc: 'Protección. +6 de Armadura.' },
+  { id: '5', name: 'Escudo Hierro', cost: 1, type: 'defense', value: 6, icon: 'fa-solid fa-shield-halved', desc: 'Protección. +6 de Armadura.' },
+  { id: '6', name: 'Escudo Hierro', cost: 1, type: 'defense', value: 6, icon: 'fa-solid fa-shield-halved', desc: 'Protección. +6 de Armadura.' },
+  { id: '7', name: 'Golpe Pesado', cost: 2, type: 'attack', value: 16, icon: 'fa-solid fa-skull', desc: 'Ataque pesado. 16 daño.' },
+  { id: '8', name: 'Golpe Pesado', cost: 2, type: 'attack', value: 16, icon: 'fa-solid fa-skull', desc: 'Ataque pesado. 16 daño.' },
+  { id: '9', name: 'Elixir Vida', cost: 1, type: 'heal', value: 6, icon: 'fa-solid fa-flask', desc: 'Restablece 6 de vida.' },
+  { id: '10', name: 'Rayo Rúnico', cost: 2, type: 'attack', value: 18, icon: 'fa-solid fa-wand-magic-sparkles', desc: 'Rayo místico. 18 daño.' }
 ];
 
 let drawPile = [];
@@ -46,7 +47,7 @@ function shuffle(array) {
   return array;
 }
 
-// SISTEMA DE NOTIFICACIONES ELEGANTE (SIN ALERTS)
+// MENSAJES NOTIFICADORES FLOTANTES (REEMPLAZO DE ALERT)
 function showToast(message, duration = 1500) {
   const toast = document.getElementById('game-toast');
   const toastText = document.getElementById('toast-text');
@@ -105,7 +106,7 @@ function renderHand() {
         <span class="card-title">${card.name}</span>
         <span class="card-cost">${card.cost}</span>
       </div>
-      <div class="card-art">${card.art}</div>
+      <div class="card-art"><i class="${card.icon}"></i></div>
       <div class="card-desc">${card.desc}</div>
     `;
 

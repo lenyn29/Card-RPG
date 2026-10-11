@@ -4,17 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Card RPG: Fantasía Oscura</title>
-  <link rel="stylesheet" href="style.css">
+  
+  <!-- BIBLIOTECA DE ICONOS VECTORIALES (FONT AWESOME) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="style.css?v=2">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#161214">
 </head>
 <body>
   <div class="game-shell">
     
-    <!-- FONDO ILUSTRADO DE MAZMORRA -->
+    <!-- FONDO AMBIENTAL DE ESCENARIO -->
     <div class="dungeon-bg"></div>
 
-    <!-- BANNER NOTIFICADOR (REEMPLAZO DE ALERT) -->
+    <!-- BANNER DE NOTIFICACIONES (REEMPLAZO DE ALERTS) -->
     <div id="game-toast" class="toast-banner hidden">
       <span id="toast-text">¡Turno del enemigo!</span>
     </div>
@@ -23,7 +27,7 @@
     <header class="battle-header">
       <div class="entity-status player-status">
         <div class="avatar-frame">
-          <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=100&h=100&fit=crop" alt="Héroe" class="avatar-img">
+          <i class="fa-solid fa-user-ninja avatar-icon"></i>
         </div>
         <div class="bar-container">
           <span class="status-name">Héroe</span>
@@ -39,58 +43,59 @@
 
       <div class="entity-status enemy-status">
         <div class="bar-container text-right">
-          <span class="status-name" id="enemy-name">Golem de Piedra</span>
+          <span class="status-name" id="enemy-name">Orco Esqueleto</span>
           <div class="hp-bar enemy"><div class="hp-fill enemy" id="enemy-hp-fill" style="width: 100%;"></div></div>
           <small><span id="enemy-hp">60</span> / 60 HP</small>
         </div>
         <div class="avatar-frame enemy">
-          <img id="enemy-avatar-img" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&h=100&fit=crop" alt="Enemigo" class="avatar-img">
+          <i class="fa-solid fa-skull-crossbones avatar-icon enemy"></i>
         </div>
       </div>
     </header>
 
-    <!-- ÁREA CENTRAL DE COMBATE (ESCENARIO) -->
+    <!-- ESCENARIO DE COMBATE -->
     <main class="battle-arena">
-      <!-- ESCENARIO DEL ENEMIGO -->
       <div class="enemy-stage-visual">
-        <!-- Burbuja de Intención estilo Card Guardians -->
+        <!-- BURBUJA DE INTENCIÓN (CARD GUARDIANS) -->
         <div class="speech-bubble" id="enemy-intent-bubble">
-          <span class="intent-icon">⚔️</span> <span id="enemy-intent-val">12</span>
+          <i class="fa-solid fa-hand-fist intent-icon"></i>
+          <span id="enemy-intent-val">12</span>
         </div>
 
+        <!-- SPRITE DEL MONSTRUO CON PLATAFORMA -->
         <div class="monster-wrapper">
-          <img id="monster-sprite" src="https://cdn-icons-png.flaticon.com/512/3408/3408506.png" alt="Monstruo" class="monster-img">
+          <img id="monster-sprite" src="https://raw.githubusercontent.com/pokeapi/sprites/master/sprites/pokemon/other/official-artwork/92.png" alt="Enemigo" class="monster-img">
           <div class="shadow-platform"></div>
         </div>
       </div>
     </main>
 
-    <!-- PIE DE PÁGINA Y MANO DE CARTAS -->
+    <!-- CONTROLES E INVENTARIO DE CARTAS -->
     <footer class="battle-footer">
       <div class="player-hud-row">
         <div class="deck-pile" title="Mazo de Robo">
-          🎴 <span id="deck-count">0</span>
+          <i class="fa-solid fa-layer-group"></i> <span id="deck-count">0</span>
         </div>
 
         <div class="energy-orb">
-          <span id="player-energy">3</span>/<span id="player-max-energy">3</span> ⚡
+          <span id="player-energy">3</span>/<span id="player-max-energy">3</span> <i class="fa-solid fa-bolt"></i>
         </div>
 
         <div class="discard-pile" title="Descarte">
-          🪦 <span id="discard-count">0</span>
+          <i class="fa-solid fa-box-archive"></i> <span id="discard-count">0</span>
         </div>
 
         <button class="btn-end-turn" onclick="endTurn()">Terminar Turno</button>
       </div>
 
       <div class="cards-hand-container" id="player-hand">
-        <!-- Cartas renderizadas por JavaScript -->
+        <!-- Las cartas se generan dinámicamente -->
       </div>
     </footer>
 
   </div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js');

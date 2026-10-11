@@ -2,7 +2,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Cinzel', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   user-select: none;
 }
 
@@ -28,20 +28,20 @@ body {
   border-right: 2px solid #33272a;
 }
 
-/* FONDO ILUSTRADO AMBIENTAL */
+/* FONDO AMBIENTAL DE MAZMORRA ILUSTRADO */
 .dungeon-bg {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, rgba(22, 18, 20, 0.4) 0%, rgba(11, 9, 10, 0.9) 100%),
+  background: radial-gradient(circle, rgba(22, 18, 20, 0.4) 0%, rgba(11, 9, 10, 0.95) 100%),
               url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&fit=crop') center/cover no-repeat;
-  filter: brightness(0.6) contrast(1.2);
+  filter: brightness(0.5) contrast(1.2);
   z-index: 1;
 }
 
-/* NOTIFICACIÓN ESTILO BANNER (SUSTITUTO DE ALERT) */
+/* NOTIFICADOR DE TEXTO (EN LUGAR DE ALERTS) */
 .toast-banner {
   position: absolute;
   top: 40%;
@@ -50,9 +50,9 @@ body {
   background: linear-gradient(135deg, rgba(139, 0, 0, 0.95) 0%, rgba(30, 10, 15, 0.95) 100%);
   border: 2px solid #d4af37;
   color: #fff;
-  padding: 14px 28px;
+  padding: 12px 24px;
   border-radius: 12px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: bold;
   text-align: center;
   box-shadow: 0 10px 30px rgba(0,0,0,0.9);
@@ -74,8 +74,8 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 10px 12px;
-  background: rgba(15, 12, 14, 0.85);
-  backdrop-filter: blur(6px);
+  background: rgba(15, 12, 14, 0.88);
+  backdrop-filter: blur(8px);
   border-bottom: 2px solid #4a3b42;
   padding-top: max(10px, env(safe-area-inset-top));
 }
@@ -88,11 +88,14 @@ body {
   background: #231b1e;
   border: 2px solid #d4af37;
   border-radius: 8px;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .avatar-frame.enemy { border-color: #8b0000; }
-.avatar-img { width: 100%; height: 100%; object-fit: cover; }
+.avatar-icon { font-size: 1.2rem; color: #d4af37; }
+.avatar-icon.enemy { color: #dc2626; }
 
 .bar-container { display: flex; flex-direction: column; gap: 2px; }
 .bar-container.text-right { text-align: right; }
@@ -133,11 +136,11 @@ body {
   align-items: center;
 }
 
-/* BURBUJA DE INTENCIÓN (CARD GUARDIANS) */
+/* BURBUJA DE INTENCIÓN ESTILO CARD GUARDIANS */
 .speech-bubble {
   position: absolute;
-  top: -35px;
-  background: rgba(20, 15, 18, 0.9);
+  top: -25px;
+  background: rgba(20, 15, 18, 0.95);
   border: 2px solid #b91c1c;
   color: #fca5a5;
   padding: 4px 10px;
@@ -146,7 +149,7 @@ body {
   font-weight: bold;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.8);
   animation: floatBubble 2s infinite ease-in-out;
 }
@@ -164,21 +167,20 @@ body {
 }
 
 .monster-img {
-  width: 150px;
-  height: 150px;
+  width: 140px;
+  height: 140px;
   object-fit: contain;
-  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8));
-  transition: transform 0.2s ease;
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.9));
 }
 
 .shadow-platform {
-  width: 120px;
-  height: 18px;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 70%);
-  margin-top: -10px;
+  width: 110px;
+  height: 16px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 70%);
+  margin-top: -15px;
 }
 
-/* PIE DE PÁGINA Y CONTROLES */
+/* BARRA DE CARTAS Y NAVEGACIÓN INFERIOR */
 .battle-footer {
   position: relative;
   z-index: 10;
@@ -206,6 +208,9 @@ body {
   font-size: 0.72rem;
   color: #d4af37;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .energy-orb {
@@ -216,6 +221,9 @@ body {
   border-radius: 14px;
   font-weight: bold;
   font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .btn-end-turn {
@@ -238,6 +246,7 @@ body {
   padding: 4px 0;
 }
 
+/* DISEÑO DE CARTAS MEDIEVALES CON ICONOS */
 .game-card {
   width: 80px;
   height: 120px;
@@ -256,5 +265,5 @@ body {
 .card-top { display: flex; justify-content: space-between; align-items: center; font-size: 0.65rem; font-weight: bold; }
 .card-cost { background: #3b82f6; color: #fff; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .card-title { font-size: 0.6rem; color: #f3e8ee; text-align: center; font-weight: bold; }
-.card-art { font-size: 1.3rem; text-align: center; }
+.card-art { font-size: 1.3rem; text-align: center; color: #d4af37; }
 .card-desc { font-size: 0.5rem; color: #c0b2b8; text-align: center; line-height: 1.1; }
