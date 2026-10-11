@@ -5,97 +5,90 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Card RPG: Fantasía Oscura</title>
   
-  <!-- BIBLIOTECA DE ICONOS VECTORIALES (FONT AWESOME) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#161214">
+  <meta name="theme-color" content="#4a7c59">
 </head>
 <body>
   <div class="game-shell">
     
-    <!-- FONDO AMBIENTAL DE ESCENARIO -->
-    <div class="dungeon-bg"></div>
+    <!-- FONDO ESTILO PRADERA (CARD GUARDIANS) -->
+    <div class="meadow-bg"></div>
 
-    <!-- BANNER DE NOTIFICACIONES (REEMPLAZO DE ALERTS) -->
+    <!-- BANNER DE NOTIFICACIONES -->
     <div id="game-toast" class="toast-banner hidden">
       <span id="toast-text">¡Turno del enemigo!</span>
     </div>
 
-    <!-- CABECERA DEL COMBATE -->
-    <header class="battle-header">
-      <div class="entity-status player-status">
-        <div class="avatar-frame">
-          <i class="fa-solid fa-user-ninja avatar-icon"></i>
-        </div>
-        <div class="bar-container">
-          <span class="status-name">Héroe</span>
-          <div class="hp-bar"><div class="hp-fill" id="player-hp-fill" style="width: 100%;"></div></div>
-          <small><span id="player-hp">80</span> / 80 HP</small>
-        </div>
-      </div>
-
-      <div class="dungeon-info">
-        <span class="act-label">ACTO I</span>
-        <h3 class="node-title">Catacumbas</h3>
-      </div>
-
-      <div class="entity-status enemy-status">
-        <div class="bar-container text-right">
-          <span class="status-name" id="enemy-name">Orco Esqueleto</span>
-          <div class="hp-bar enemy"><div class="hp-fill enemy" id="enemy-hp-fill" style="width: 100%;"></div></div>
-          <small><span id="enemy-hp">60</span> / 60 HP</small>
-        </div>
-        <div class="avatar-frame enemy">
-          <i class="fa-solid fa-skull-crossbones avatar-icon enemy"></i>
-        </div>
-      </div>
-    </header>
-
     <!-- ESCENARIO DE COMBATE -->
     <main class="battle-arena">
-      <div class="enemy-stage-visual">
-        <!-- BURBUJA DE INTENCIÓN (CARD GUARDIANS) -->
+      <!-- ENEMIGO CON SALUD ARRIBA -->
+      <div class="enemy-container">
+        <div class="enemy-hp-floating">
+          <span class="enemy-name" id="enemy-name">Espíritu Oscuro</span>
+          <div class="hp-bar enemy">
+            <div class="hp-fill enemy" id="enemy-hp-fill" style="width: 100%;"></div>
+          </div>
+          <small><span id="enemy-hp">60</span> / 60 HP</small>
+        </div>
+
+        <!-- BURBUJA DE INTENCIÓN -->
         <div class="speech-bubble" id="enemy-intent-bubble">
-          <i class="fa-solid fa-hand-fist intent-icon"></i>
+          <i class="fa-solid fa-claw-marks intent-icon"></i>
           <span id="enemy-intent-val">12</span>
         </div>
 
-        <!-- SPRITE DEL MONSTRUO CON PLATAFORMA -->
+        <!-- SPRITE DEL MONSTRUO -->
         <div class="monster-wrapper">
           <img id="monster-sprite" src="https://raw.githubusercontent.com/pokeapi/sprites/master/sprites/pokemon/other/official-artwork/92.png" alt="Enemigo" class="monster-img">
           <div class="shadow-platform"></div>
         </div>
       </div>
+
+      <!-- ESTADÍSTICAS DEL HÉROE UBICADAS ABAJO (SOBRE LAS CARTAS) -->
+      <div class="hero-stats-row">
+        <div class="hero-avatar">
+          <i class="fa-solid fa-helmet-safety"></i>
+        </div>
+        <div class="hero-hp-container">
+          <div class="hp-bar hero">
+            <div class="hp-fill hero" id="player-hp-fill" style="width: 100%;"></div>
+          </div>
+          <small><span id="player-hp">80</span> / 80 HP</small>
+        </div>
+        <div class="hero-armor-badge">
+          <i class="fa-solid fa-shield-halved"></i> <span id="player-armor">0</span>
+        </div>
+      </div>
     </main>
 
-    <!-- CONTROLES E INVENTARIO DE CARTAS -->
+    <!-- PIE DE PÁGINA Y CARTAS -->
     <footer class="battle-footer">
       <div class="player-hud-row">
-        <div class="deck-pile" title="Mazo de Robo">
+        <div class="deck-pile" title="Mazo">
           <i class="fa-solid fa-layer-group"></i> <span id="deck-count">0</span>
         </div>
 
         <div class="energy-orb">
-          <span id="player-energy">3</span>/<span id="player-max-energy">3</span> <i class="fa-solid fa-bolt"></i>
+          <span id="player-energy">3</span>/<span id="player-max-energy">3</span>
         </div>
+
+        <button class="btn-end-turn" onclick="endTurn()">Listo</button>
 
         <div class="discard-pile" title="Descarte">
           <i class="fa-solid fa-box-archive"></i> <span id="discard-count">0</span>
         </div>
-
-        <button class="btn-end-turn" onclick="endTurn()">Terminar Turno</button>
       </div>
 
       <div class="cards-hand-container" id="player-hand">
-        <!-- Las cartas se generan dinámicamente -->
+        <!-- Cartas renderizadas -->
       </div>
     </footer>
 
   </div>
 
-  <script src="app.js?v=2"></script>
+  <script src="app.js?v=3"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js');

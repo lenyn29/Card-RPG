@@ -7,8 +7,8 @@
 }
 
 body {
-  background-color: #050405;
-  color: #e5e5e5;
+  background-color: #1a2e1e;
+  color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,169 +24,153 @@ body {
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  border-left: 2px solid #33272a;
-  border-right: 2px solid #33272a;
 }
 
-/* FONDO AMBIENTAL DE MAZMORRA ILUSTRADO */
-.dungeon-bg {
+/* FONDO ESTILO PRADERA Y MONTAÑAS DE CARD GUARDIANS */
+.meadow-bg {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, rgba(22, 18, 20, 0.4) 0%, rgba(11, 9, 10, 0.95) 100%),
-              url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&fit=crop') center/cover no-repeat;
-  filter: brightness(0.5) contrast(1.2);
+  background: linear-gradient(180deg, #87ceeb 0%, #b4e197 45%, #83b735 70%, #4e7c27 100%);
   z-index: 1;
 }
 
-/* NOTIFICADOR DE TEXTO (EN LUGAR DE ALERTS) */
 .toast-banner {
   position: absolute;
-  top: 40%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: linear-gradient(135deg, rgba(139, 0, 0, 0.95) 0%, rgba(30, 10, 15, 0.95) 100%);
-  border: 2px solid #d4af37;
+  background: rgba(20, 20, 20, 0.9);
+  border: 2px solid #facc15;
   color: #fff;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-size: 0.95rem;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 0.9rem;
   font-weight: bold;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.9);
   z-index: 100;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
-.toast-banner.hidden {
-  opacity: 0;
-  transform: translate(-50%, -60%) scale(0.8);
-}
+.toast-banner.hidden { opacity: 0; pointer-events: none; }
 
-/* CABECERA DE COMBATE */
-.battle-header {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 12px;
-  background: rgba(15, 12, 14, 0.88);
-  backdrop-filter: blur(8px);
-  border-bottom: 2px solid #4a3b42;
-  padding-top: max(10px, env(safe-area-inset-top));
-}
-
-.entity-status { display: flex; gap: 8px; align-items: center; }
-
-.avatar-frame {
-  width: 40px;
-  height: 40px;
-  background: #231b1e;
-  border: 2px solid #d4af37;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.avatar-frame.enemy { border-color: #8b0000; }
-.avatar-icon { font-size: 1.2rem; color: #d4af37; }
-.avatar-icon.enemy { color: #dc2626; }
-
-.bar-container { display: flex; flex-direction: column; gap: 2px; }
-.bar-container.text-right { text-align: right; }
-
-.status-name { font-size: 0.7rem; font-weight: bold; color: #d4af37; text-transform: uppercase; }
-
-.hp-bar {
-  width: 80px;
-  height: 8px;
-  background: #2a2225;
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid #4a3b42;
-}
-
-.hp-fill { height: 100%; background: #22c55e; transition: width 0.3s ease; }
-.hp-fill.enemy { background: #dc2626; }
-
-.dungeon-info { text-align: center; }
-.act-label { font-size: 0.58rem; color: #a18a92; letter-spacing: 1px; display: block; }
-.node-title { font-size: 0.8rem; color: #f3e8ee; font-weight: bold; }
-
-/* ESCENARIO DEL ENEMIGO */
+/* ÁREA CENTRAL DE COMBATE */
 .battle-arena {
   position: relative;
   z-index: 5;
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+  padding: 20px 16px 10px 16px;
+  padding-top: max(20px, env(safe-area-inset-top));
 }
 
-.enemy-stage-visual {
-  position: relative;
+/* ENEMIGO CON HP ARRIBA */
+.enemy-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  width: 100%;
+  margin-top: 10px;
 }
 
-/* BURBUJA DE INTENCIÓN ESTILO CARD GUARDIANS */
+.enemy-hp-floating {
+  background: rgba(0, 0, 0, 0.65);
+  border: 2px solid #ef4444;
+  border-radius: 12px;
+  padding: 6px 14px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+.enemy-name { font-size: 0.75rem; font-weight: bold; color: #fca5a5; display: block; margin-bottom: 2px; }
+
+.hp-bar {
+  width: 110px;
+  height: 10px;
+  background: #334155;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #0f172a;
+}
+
+.hp-fill.enemy { background: #dc2626; height: 100%; transition: width 0.3s; }
+.hp-fill.hero { background: #22c55e; height: 100%; transition: width 0.3s; }
+
 .speech-bubble {
   position: absolute;
-  top: -25px;
-  background: rgba(20, 15, 18, 0.95);
-  border: 2px solid #b91c1c;
-  color: #fca5a5;
+  top: 45px;
+  right: 25%;
+  background: #ffffff;
+  color: #991b1b;
+  border: 2px solid #991b1b;
   padding: 4px 10px;
-  border-radius: 16px;
-  font-size: 0.75rem;
+  border-radius: 18px;
   font-weight: bold;
+  font-size: 0.8rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
   display: flex;
   align-items: center;
-  gap: 6px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.8);
-  animation: floatBubble 2s infinite ease-in-out;
+  gap: 4px;
+  z-index: 10;
 }
 
-@keyframes floatBubble {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
+.monster-wrapper { display: flex; flex-direction: column; align-items: center; margin-top: 15px; }
+.monster-img { width: 150px; height: 150px; object-fit: contain; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4)); }
+.shadow-platform { width: 110px; height: 16px; background: radial-gradient(ellipse, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 70%); margin-top: -15px; }
 
-.monster-wrapper {
-  position: relative;
+/* ESTADÍSTICAS DEL HÉROE ABAJO ESTILO CARD GUARDIANS */
+.hero-stats-row {
+  width: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  gap: 10px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(6px);
+  padding: 8px 14px;
+  border-radius: 16px;
+  border: 2px solid #38bdf8;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
 }
 
-.monster-img {
-  width: 140px;
-  height: 140px;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.9));
+.hero-avatar {
+  width: 38px;
+  height: 38px;
+  background: #1e293b;
+  border: 2px solid #38bdf8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #38bdf8;
 }
 
-.shadow-platform {
-  width: 110px;
-  height: 16px;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 70%);
-  margin-top: -15px;
+.hero-hp-container { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+
+.hero-armor-badge {
+  background: #1e293b;
+  border: 2px solid #a855f7;
+  color: #c084fc;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-/* BARRA DE CARTAS Y NAVEGACIÓN INFERIOR */
+/* FOOTER Y MANO DE CARTAS ESTILO CARD GUARDIANS */
 .battle-footer {
   position: relative;
   z-index: 10;
-  background: rgba(12, 9, 11, 0.95);
-  backdrop-filter: blur(8px);
-  border-top: 2px solid #4a3b42;
+  background: rgba(15, 23, 42, 0.95);
+  border-top: 3px solid #334155;
   padding: 10px 12px;
   display: flex;
   flex-direction: column;
@@ -194,76 +178,105 @@ body {
   padding-bottom: max(10px, env(safe-area-inset-bottom));
 }
 
-.player-hud-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+.player-hud-row { display: flex; justify-content: space-between; align-items: center; }
 
 .deck-pile, .discard-pile {
-  background: #1a1417;
-  border: 1px solid #4a3b42;
-  border-radius: 8px;
-  padding: 4px 8px;
-  font-size: 0.72rem;
-  color: #d4af37;
-  font-weight: bold;
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: #facc15;
+  font-weight: bold;
 }
 
 .energy-orb {
-  background: #1f171b;
-  border: 2px solid #3b82f6;
-  color: #60a5fa;
-  padding: 4px 12px;
-  border-radius: 14px;
-  font-weight: bold;
-  font-size: 0.82rem;
+  background: radial-gradient(circle, #0284c7 0%, #0369a1 100%);
+  border: 2px solid #38bdf8;
+  color: #fff;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
 }
 
 .btn-end-turn {
-  background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
   color: #fff;
-  border: 1px solid #f87171;
-  padding: 6px 12px;
-  border-radius: 8px;
+  border: 2px solid #2dd4bf;
+  padding: 8px 18px;
+  border-radius: 12px;
   font-weight: bold;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   cursor: pointer;
 }
 
 .cards-hand-container {
   display: flex;
   justify-content: center;
-  gap: 6px;
-  min-height: 125px;
+  gap: 8px;
+  min-height: 135px;
   overflow-x: auto;
-  padding: 4px 0;
+  padding: 6px 0;
 }
 
-/* DISEÑO DE CARTAS MEDIEVALES CON ICONOS */
+/* ESTILO DE CARTAS CARD GUARDIANS (MARCO ROJO ATAQUE / AZUL DEFENSA) */
 .game-card {
-  width: 80px;
-  height: 120px;
+  width: 90px;
+  height: 130px;
   flex-shrink: 0;
-  background: linear-gradient(135deg, #231b1e 0%, #161214 100%);
-  border: 2px solid #d4af37;
   border-radius: 10px;
   padding: 6px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+  position: relative;
+  background: #f8fafc;
 }
 
-.card-top { display: flex; justify-content: space-between; align-items: center; font-size: 0.65rem; font-weight: bold; }
-.card-cost { background: #3b82f6; color: #fff; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-.card-title { font-size: 0.6rem; color: #f3e8ee; text-align: center; font-weight: bold; }
-.card-art { font-size: 1.3rem; text-align: center; color: #d4af37; }
-.card-desc { font-size: 0.5rem; color: #c0b2b8; text-align: center; line-height: 1.1; }
+.game-card.attack {
+  border: 3px solid #dc2626;
+  background: linear-gradient(180deg, #fee2e2 0%, #ffffff 100%);
+}
+
+.game-card.defense {
+  border: 3px solid #2563eb;
+  background: linear-gradient(180deg, #dbeafe 0%, #ffffff 100%);
+}
+
+.card-top { display: flex; justify-content: space-between; align-items: center; }
+
+.card-cost-gem {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #0284c7;
+  color: #fff;
+  border: 2px solid #fff;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+.card-title { font-size: 0.65rem; color: #0f172a; text-align: center; font-weight: bold; width: 100%; }
+.card-art { font-size: 1.6rem; text-align: center; margin: 4px 0; }
+.card-art.attack { color: #dc2626; }
+.card-art.defense { color: #2563eb; }
+.card-desc { font-size: 0.52rem; color: #334155; text-align: center; line-height: 1.1; font-weight: 500; }
