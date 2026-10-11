@@ -11,10 +11,20 @@
 <body>
   <div class="game-shell">
     
-    <!-- CABECERA DEL COMBATE (ESTADÍSTICAS) -->
+    <!-- FONDO ILUSTRADO DE MAZMORRA -->
+    <div class="dungeon-bg"></div>
+
+    <!-- BANNER NOTIFICADOR (REEMPLAZO DE ALERT) -->
+    <div id="game-toast" class="toast-banner hidden">
+      <span id="toast-text">¡Turno del enemigo!</span>
+    </div>
+
+    <!-- CABECERA DEL COMBATE -->
     <header class="battle-header">
       <div class="entity-status player-status">
-        <div class="avatar-frame">🛡️</div>
+        <div class="avatar-frame">
+          <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=100&h=100&fit=crop" alt="Héroe" class="avatar-img">
+        </div>
         <div class="bar-container">
           <span class="status-name">Héroe</span>
           <div class="hp-bar"><div class="hp-fill" id="player-hp-fill" style="width: 100%;"></div></div>
@@ -29,41 +39,52 @@
 
       <div class="entity-status enemy-status">
         <div class="bar-container text-right">
-          <span class="status-name">Orco Esqueleto</span>
+          <span class="status-name" id="enemy-name">Golem de Piedra</span>
           <div class="hp-bar enemy"><div class="hp-fill enemy" id="enemy-hp-fill" style="width: 100%;"></div></div>
           <small><span id="enemy-hp">60</span> / 60 HP</small>
         </div>
-        <div class="avatar-frame enemy">💀</div>
+        <div class="avatar-frame enemy">
+          <img id="enemy-avatar-img" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&h=100&fit=crop" alt="Enemigo" class="avatar-img">
+        </div>
       </div>
     </header>
 
-    <!-- ÁREA CENTRAL DE COMBATE (ENEMIGO Y ACCIONES) -->
+    <!-- ÁREA CENTRAL DE COMBATE (ESCENARIO) -->
     <main class="battle-arena">
-      <div class="enemy-intent-box">
-        <span class="intent-icon">⚔️</span>
-        <span id="enemy-intent-text">El enemigo se prepara para atacar (Daño: 12)</span>
-      </div>
-
+      <!-- ESCENARIO DEL ENEMIGO -->
       <div class="enemy-stage-visual">
-        <div class="monster-card-placeholder">
-          <div class="monster-glow"></div>
-          <div class="monster-sprite">👹</div>
+        <!-- Burbuja de Intención estilo Card Guardians -->
+        <div class="speech-bubble" id="enemy-intent-bubble">
+          <span class="intent-icon">⚔️</span> <span id="enemy-intent-val">12</span>
+        </div>
+
+        <div class="monster-wrapper">
+          <img id="monster-sprite" src="https://cdn-icons-png.flaticon.com/512/3408/3408506.png" alt="Monstruo" class="monster-img">
+          <div class="shadow-platform"></div>
         </div>
       </div>
     </main>
 
-    <!-- MANO DE CARTAS Y CONTROLES DEL JUGADOR -->
+    <!-- PIE DE PÁGINA Y MANO DE CARTAS -->
     <footer class="battle-footer">
       <div class="player-hud-row">
+        <div class="deck-pile" title="Mazo de Robo">
+          🎴 <span id="deck-count">0</span>
+        </div>
+
         <div class="energy-orb">
           <span id="player-energy">3</span>/<span id="player-max-energy">3</span> ⚡
         </div>
+
+        <div class="discard-pile" title="Descarte">
+          🪦 <span id="discard-count">0</span>
+        </div>
+
         <button class="btn-end-turn" onclick="endTurn()">Terminar Turno</button>
       </div>
 
-      <!-- CONTENEDOR DE LA MANO DE CARTAS -->
       <div class="cards-hand-container" id="player-hand">
-        <!-- Las cartas se generan dinámicamente desde JavaScript -->
+        <!-- Cartas renderizadas por JavaScript -->
       </div>
     </footer>
 

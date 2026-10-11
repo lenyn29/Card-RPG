@@ -6,32 +6,84 @@ let maxEnemyHp = 60;
 let playerEnergy = 3;
 let maxPlayerEnergy = 3;
 
-// BASE DE DATOS DE CARTAS (MEDIEVAL / FANTASÍA OSCURA)
-const cardDatabase = [
-  { id: '1', name: 'Corte Oscuro', cost: 1, type: 'attack', value: 8, art: '🗡️', desc: 'Infiltrado de sombras. Inflige 8 de daño.' },
-  { id: '2', name: 'Escudo de Hierro', cost: 1, type: 'defense', value: 6, art: '🛡️', desc: 'Refuerza tu guardia. +6 de Armadura.' },
-  { id: '3', name: 'Golpe Devastador', cost: 2, type: 'attack', value: 16, art: '🪓', desc: 'Ataque pesado. Inflige 16 de daño.' },
-  { id: '4', name: 'Elixir Místico', cost: 1, type: 'heal', value: 5, art: '🧪', desc: 'Restaura 5 de vida.' }
+const initialDeck = [
+  { id: '1', name: 'Corte Oscuro', cost: 1, type: 'attack', value: 8, art: '🗡️', desc: 'Ataque veloz. Inflige 8 de daño.' },
+  { id: '2', name: 'Corte Oscuro', cost: 1, type: 'attack', value: 8, art: '🗡️', desc: 'Ataque veloz. Inflige 8 de daño.' },
+  { id: '3', name: 'Corte Oscuro', cost: 1, type: 'attack', value: 8, art: '🗡️', desc: 'Ataque veloz. Inflige 8 de daño.' },
+  { id: '4', name: 'Escudo Hierro', cost: 1, type: 'defense', value: 6, art: '🛡️', desc: 'Protección. +6 de Armadura.' },
+  { id: '5', name: 'Escudo Hierro', cost: 1, type: 'defense', value: 6, art: '🛡️', desc: 'Protección. +6 de Armadura.' },
+  { id: '6', name: 'Escudo Hierro', cost: 1, type: 'defense', value: 6, art: '🛡️', desc: 'Protección. +6 de Armadura.' },
+  { id: '7', name: 'Golpe Pesado', cost: 2, type: 'attack', value: 16, art: '🪓', desc: 'Ataque pesado. 16 daño.' },
+  { id: '8', name: 'Golpe Pesado', cost: 2, type: 'attack', value: 16, art: '🪓', desc: 'Ataque pesado. 16 daño.' },
+  { id: '9', name: 'Elixir Vida', cost: 1, type: 'heal', value: 6, art: '🧪', desc: 'Restablece 6 de vida.' },
+  { id: '10', name: 'Rayo Rúnico', cost: 2, type: 'attack', value: 18, art: '⚡', desc: 'Rayo místico. 18 daño.' }
 ];
 
+let drawPile = [];
+let discardPile = [];
 let currentHand = [];
 
-// INICIALIZACIÓN
 document.addEventListener('DOMContentLoaded', () => {
-  startCombat();
+  initGame();
 });
 
-function startCombat() {
+function initGame() {
+  drawPile = shuffle([...initialDeck]);
+  discardPile = [];
+  currentHand = [];
+  playerHp = maxPlayerHp;
+  enemyHp = maxEnemyHp;
+  playerEnergy = maxPlayerEnergy;
+
+  startTurn();
+}
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// SISTEMA DE NOTIFICACIONES ELEGANTE (SIN ALERTS)
+function showToast(message, duration = 1500) {
+  const toast = document.getElementById('game-toast');
+  const toastText = document.getElementById('toast-text');
+  
+  toastText.textContent = message;
+  toast.classList.remove('hidden');
+
+  setTimeout(() => {
+    toast.classList.add('hidden');
+  }, duration);
+}
+
+function startTurn() {
+  playerEnergy = maxPlayerEnergy;
+  drawCards(4);
   updateUI();
-  drawHand();
+}
+
+function drawCards(count) {
+  for (let i = 0; i < count; i++) {
+    if (drawPile.length === 0) {
+      if (discardPile.length === 0) break;
+      drawPile = shuffle([...discardPile]);
+      discardPile = [];
+    }
+    currentHand.push(drawPile.pop());
+  }
+  renderHand();
 }
 
 function updateUI() {
   document.getElementById('player-hp').textContent = playerHp;
   document.getElementById('enemy-hp').textContent = enemyHp;
   document.getElementById('player-energy').textContent = playerEnergy;
+  document.getElementById('deck-count').textContent = drawPile.length;
+  document.getElementById('discard-count').textContent = discardPile.length;
 
-  // Actualizar barras de vida
   const playerPct = Math.max(0, (playerHp / maxPlayerHp) * 100);
   const enemyPct = Math.max(0, (enemyHp / maxEnemyHp) * 100);
 
@@ -61,23 +113,16 @@ function renderHand() {
   });
 }
 
-function drawHand() {
-  currentHand = [...cardDatabase]; // Roba las cartas de prueba
-  renderHand();
-}
-
 function playCard(index) {
   const card = currentHand[index];
 
   if (playerEnergy < card.cost) {
-    alert("¡No tienes suficiente energía!");
+    showToast("¡Energía insuficiente!");
     return;
   }
 
-  // Descontar energía
   playerEnergy -= card.cost;
 
-  // Aplicar efecto
   if (card.type === 'attack') {
     enemyHp -= card.value;
     if (enemyHp < 0) enemyHp = 0;
@@ -86,37 +131,41 @@ function playCard(index) {
     if (playerHp > maxPlayerHp) playerHp = maxPlayerHp;
   }
 
-  // Quitar carta jugada de la mano
-  currentHand.splice(index, 1);
+  discardPile.push(currentHand.splice(index, 1)[0]);
+
   updateUI();
   renderHand();
 
   if (enemyHp <= 0) {
+    showToast("¡Victoria! Has derrotado al enemigo", 2000);
     setTimeout(() => {
-      alert("¡Has derrotado al enemigo!");
-      enemyHp = maxEnemyHp;
-      playerEnergy = maxPlayerEnergy;
-      startCombat();
-    }, 300);
+      initGame();
+    }, 2000);
   }
 }
 
-// Función endTurn vinculada y lista para usarse
 function endTurn() {
-  alert("Turno del enemigo...");
-  playerHp -= 10;
-  if (playerHp < 0) playerHp = 0;
+  discardPile.push(...currentHand);
+  currentHand = [];
+  renderHand();
 
-  // Reiniciar turno del jugador
-  playerEnergy = maxPlayerEnergy;
-  drawHand();
-  updateUI();
+  showToast("Turno del enemigo...", 1200);
 
-  if (playerHp <= 0) {
-    alert("¡Has sido derrotado!");
-    playerHp = maxPlayerHp;
-    enemyHp = maxEnemyHp;
-    startCombat();
-  }
+  setTimeout(() => {
+    playerHp -= 10;
+    if (playerHp < 0) playerHp = 0;
+
+    updateUI();
+
+    if (playerHp <= 0) {
+      showToast("¡Has sido derrotado!", 2000);
+      setTimeout(() => {
+        initGame();
+      }, 2000);
+    } else {
+      startTurn();
+    }
+  }, 1200);
 }
-window.endTurn = endTurn; // Exponer globalmente para el botón en HTML
+
+window.endTurn = endTurn;
