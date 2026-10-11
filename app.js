@@ -8,14 +8,12 @@ let maxPlayerEnergy = 3;
 let enemyIntent = { type: 'attack', value: 12 };
 
 const initialDeck = [
-  { id: '1', name: 'Ataque', cost: 1, type: 'attack', value: 8, icon: 'fa-solid fa-hand-fist', desc: 'Inflige 8 de daño.' },
-  { id: '2', name: 'Ataque', cost: 1, type: 'attack', value: 8, icon: 'fa-solid fa-hand-fist', desc: 'Inflige 8 de daño.' },
-  { id: '3', name: 'Ataque', cost: 1, type: 'attack', value: 8, icon: 'fa-solid fa-hand-fist', desc: 'Inflige 8 de daño.' },
-  { id: '4', name: 'Escudo', cost: 1, type: 'defense', value: 6, icon: 'fa-solid fa-shield-halved', desc: '+6 de Armadura.' },
-  { id: '5', name: 'Escudo', cost: 1, type: 'defense', value: 6, icon: 'fa-solid fa-shield-halved', desc: '+6 de Armadura.' },
-  { id: '6', name: 'Escudo', cost: 1, type: 'defense', value: 6, icon: 'fa-solid fa-shield-halved', desc: '+6 de Armadura.' },
-  { id: '7', name: 'Golpe Pesado', cost: 2, type: 'attack', value: 16, icon: 'fa-solid fa-gavel', desc: 'Inflige 16 de daño.' },
-  { id: '8', name: 'Poción', cost: 1, type: 'heal', value: 6, icon: 'fa-solid fa-flask', desc: 'Sana 6 de vida.' }
+  { id: '1', name: 'Slash', cost: 1, type: 'attack', value: 8, icon: 'fa-solid fa-hand-fist', desc: 'Ataque directo. Inflige 8 daño.' },
+  { id: '2', name: 'Slash', cost: 1, type: 'attack', value: 8, icon: 'fa-solid fa-hand-fist', desc: 'Ataque directo. Inflige 8 daño.' },
+  { id: '3', name: 'Slash', cost: 1, type: 'attack', value: 8, icon: 'fa-solid fa-hand-fist', desc: 'Ataque directo. Inflige 8 daño.' },
+  { id: '4', name: 'Guard', cost: 1, type: 'defense', value: 6, icon: 'fa-solid fa-shield-halved', desc: '+6 de Armadura.' },
+  { id: '5', name: 'Guard', cost: 1, type: 'defense', value: 6, icon: 'fa-solid fa-shield-halved', desc: '+6 de Armadura.' },
+  { id: '6', name: 'Heal', cost: 1, type: 'heal', value: 6, icon: 'fa-solid fa-flask', desc: 'Sana 6 de vida.' }
 ];
 
 let drawPile = [];
@@ -34,7 +32,7 @@ function initGame() {
   enemyHp = maxEnemyHp;
   playerArmor = 0;
   playerEnergy = maxPlayerEnergy;
-  updateIntent();
+  updateUI();
   startTurn();
 }
 
@@ -54,17 +52,6 @@ function showToast(message, duration = 1500) {
   setTimeout(() => toast.classList.add('hidden'), duration);
 }
 
-function updateIntent() {
-  const intents = [
-    { type: 'attack', value: 10, text: 'Ataque: 10', icon: 'fa-sword' },
-    { type: 'attack', value: 14, text: 'Ataque: 14', icon: 'fa-skull' },
-    { type: 'defense', value: 8, text: 'Escudo: 8', icon: 'fa-shield' }
-  ];
-  enemyIntent = intents[Math.floor(Math.random() * intents.length)];
-  const intentEl = document.getElementById('enemy-intent-text');
-  if (intentEl) intentEl.textContent = enemyIntent.text;
-}
-
 function inspectIntent() {
   if (enemyIntent.type === 'attack') {
     showToast(`El enemigo planea infligir ${enemyIntent.value} de daño.`, 2000);
@@ -75,7 +62,6 @@ function inspectIntent() {
 
 function startTurn() {
   playerEnergy = maxPlayerEnergy;
-  playerArmor = 0; // La armadura se resetea al inicio del turno
   drawCards(3);
   updateUI();
 }
@@ -165,22 +151,23 @@ function endTurn() {
   showToast("Turno Enemigo...", 1000);
 
   setTimeout(() => {
-    if (enemyIntent.type === 'attack') {
-      let damage = enemyIntent.value;
-      if (playerArmor > 0) {
-        if (playerArmor >= damage) {
-          playerArmor -= damage;
-          damage = 0;
-        } else {
-          damage -= playerArmor;
-          playerArmor = 0;
-        }
+    let damage = enemyIntent.value;
+    if (playerArmor > 0) {
+      if (playerArmor >= damage) {
+        playerArmor -= damage;
+        damage = 0;
+      } else {
+        damage -= playerArmor;
+        playerArmor = 0;
       }
-      playerHp -= damage;
-      if (playerHp < 0) playerHp = 0;
     }
 
-    updateIntent();
+    playerHp -= damage;
+    if (playerHp < 0) playerHp = 0;
+
+    // Reseteo de armadura al final del turno enemigo (igual que Card Guardians)
+    playerArmor = 0;
+
     updateUI();
 
     if (playerHp <= 0) {

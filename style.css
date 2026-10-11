@@ -7,7 +7,7 @@
 }
 
 body {
-  background-color: #1a2e1e;
+  background-color: #000; /* Fondo negro fuera de la shell móvil */
   color: #ffffff;
   display: flex;
   justify-content: center;
@@ -16,7 +16,8 @@ body {
   overflow: hidden;
 }
 
-.game-shell {
+/* LA GAME SHELL AHORA TIENE EL FONDO DE PAISAJE UNIFICADO */
+.game-shell.unified-bg {
   width: 100%;
   max-width: 430px;
   height: 100dvh;
@@ -24,29 +25,23 @@ body {
   flex-direction: column;
   position: relative;
   overflow: hidden;
-}
-
-.meadow-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  /* FONDO DE PRADERA QUE ABARCA TODO, DETRÁS DE LAS CARTAS */
   background: linear-gradient(180deg, #87ceeb 0%, #b4e197 45%, #83b735 70%, #4e7c27 100%);
   z-index: 1;
 }
 
+/* NOTIFICACIONES TOAST */
 .toast-banner {
   position: absolute;
   top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(20, 20, 20, 0.92);
+  background: rgba(0, 0, 0, 0.85);
   border: 2px solid #facc15;
   color: #fff;
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-size: 0.9rem;
+  padding: 8px 18px;
+  border-radius: 16px;
+  font-size: 0.85rem;
   font-weight: bold;
   z-index: 100;
   transition: opacity 0.3s ease;
@@ -54,188 +49,193 @@ body {
 
 .toast-banner.hidden { opacity: 0; pointer-events: none; }
 
-.battle-arena {
-  position: relative;
-  z-index: 5;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 16px 10px 16px;
-  padding-top: max(20px, env(safe-area-inset-top));
-}
+/* REORGANIZACIÓN DISPOSICIÓN EXACTA CLON */
 
-.enemy-container {
+/* 1. ÁREA SUPERIOR (ENEMIGO) */
+.top-battle-area {
+  padding-top: max(20px, env(safe-area-inset-top));
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: 100%;
+  z-index: 10;
   margin-top: 10px;
 }
 
-.enemy-hp-floating {
-  background: rgba(0, 0, 0, 0.65);
+.enemy-status-floating {
+  background: rgba(0, 0, 0, 0.6);
   border: 2px solid #ef4444;
-  border-radius: 12px;
-  padding: 6px 14px;
+  border-radius: 10px;
+  padding: 5px 12px;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
 }
 
-.enemy-name { font-size: 0.75rem; font-weight: bold; color: #fca5a5; display: block; margin-bottom: 2px; }
+.enemy-name { font-size: 0.72rem; font-weight: bold; color: #fca5a5; display: block; margin-bottom: 1px; }
 
 .hp-bar {
-  width: 110px;
-  height: 10px;
+  width: 100px;
+  height: 9px;
   background: #334155;
-  border-radius: 6px;
+  border-radius: 5px;
   overflow: hidden;
   border: 1px solid #0f172a;
 }
 
-.hp-fill.enemy { background: #dc2626; height: 100%; transition: width 0.3s; }
-.hp-fill.hero { background: #22c55e; height: 100%; transition: width 0.3s; }
+.hp-fill { height: 100%; transition: width 0.3s ease; }
+.hp-fill.enemy { background: #dc2626; }
+.hp-fill.hero { background: #22c55e; }
 
-.speech-bubble {
+.intent-bubble-interactive {
   position: absolute;
   top: 45px;
   right: 25%;
-  background: #ffffff;
-  color: #991b1b;
-  border: 2px solid #991b1b;
-  padding: 4px 10px;
-  border-radius: 18px;
+  background: #fff;
+  color: #b91c1c;
+  border: 2px solid #b91c1c;
+  padding: 3px 9px;
+  border-radius: 16px;
   font-weight: bold;
   font-size: 0.75rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
   display: flex;
   align-items: center;
-  gap: 4px;
-  z-index: 10;
+  gap: 3px;
   cursor: pointer;
 }
 
 .monster-wrapper { display: flex; flex-direction: column; align-items: center; margin-top: 15px; }
-.monster-img { width: 150px; height: 150px; object-fit: contain; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4)); }
-.shadow-platform { width: 110px; height: 16px; background: radial-gradient(ellipse, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 70%); margin-top: -15px; }
+.monster-img { width: 140px; height: 140px; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.3)); }
+.shadow-platform { width: 100px; height: 14px; background: radial-gradient(ellipse, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 70%); margin-top: -12px; }
 
-.hero-stats-row {
-  width: 100%;
+/* 2. ÁREA CENTRAL (HÉROE ESTILO CLON) */
+.mid-hero-area {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(6px);
-  padding: 8px 14px;
-  border-radius: 16px;
-  border: 2px solid #38bdf8;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  margin-top: -15px; /* Ajuste para subir al héroe un poco */
+  margin-bottom: 5px;
 }
 
-.hero-avatar {
-  width: 38px;
-  height: 38px;
+.hero-card-guardians-hud {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(4px);
+  padding: 6px 12px;
+  border-radius: 14px;
+  border: 2px solid #38bdf8;
+}
+
+.hero-portrait {
+  width: 35px;
+  height: 35px;
   background: #1e293b;
   border: 2px solid #38bdf8;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #38bdf8;
 }
 
-.hero-hp-container { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.hero-bars { display: flex; flex-direction: column; gap: 1px; }
 
 .hero-armor-badge {
   background: #1e293b;
   border: 2px solid #a855f7;
   color: #c084fc;
-  padding: 4px 10px;
-  border-radius: 12px;
+  padding: 3px 8px;
+  border-radius: 10px;
   font-weight: bold;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
 }
 
-.battle-footer {
+/* 3. ÁREA INFERIOR (HUD DE JUEGO Y CARTAS) */
+.bottom-action-area {
   position: relative;
   z-index: 10;
-  background: rgba(15, 23, 42, 0.95);
-  border-top: 3px solid #334155;
   padding: 10px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  margin-top: auto; /* Empuja el HUD y las cartas al final */
   padding-bottom: max(10px, env(safe-area-inset-bottom));
+  /* ELIMINADO EL FONDO SÓLIDO: AHORA ES TRANSPARENTE */
+  background: transparent;
 }
 
-.player-hud-row { display: flex; justify-content: space-between; align-items: center; }
+.piles-energy-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
 
-.deck-pile, .discard-pile {
-  background: #1e293b;
-  border: 1px solid #475569;
+.deck-orb-pile, .discard-orb-pile {
+  background: rgba(30, 41, 59, 0.9);
+  border: 2px solid #64748b;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #facc15;
   font-weight: bold;
+  border-radius: 50%;
 }
 
-.energy-orb {
+.energy-orb-centered {
   background: radial-gradient(circle, #0284c7 0%, #0369a1 100%);
-  border: 2px solid #38bdf8;
+  border: 2px solid #ffffff;
   color: #fff;
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: 0.9rem;
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+  font-size: 0.85rem;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
 }
 
-.btn-end-turn {
+.btn-ready-lists {
   background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
   color: #fff;
   border: 2px solid #2dd4bf;
-  padding: 8px 18px;
-  border-radius: 12px;
+  padding: 6px 16px;
+  border-radius: 10px;
   font-weight: bold;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   cursor: pointer;
 }
 
-.cards-hand-container {
+/* MANO DE CARTAS ESTILO CLON (CON FONDO TRANSPARENTE) */
+.cards-hand-viewport {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  min-height: 135px;
+  gap: 6px;
+  min-height: 125px;
   overflow-x: auto;
-  padding: 6px 0;
+  padding: 4px 0;
+  background: transparent; /* TRANSPARENTE */
 }
 
+/* CARTAS CARD GUARDIANS MEJORADAS */
 .game-card {
-  width: 90px;
-  height: 130px;
+  width: 85px;
+  height: 125px;
   flex-shrink: 0;
   border-radius: 10px;
-  padding: 6px;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.4);
   position: relative;
   background: #f8fafc;
 }
@@ -243,28 +243,26 @@ body {
 .game-card.attack { border: 3px solid #dc2626; background: linear-gradient(180deg, #fee2e2 0%, #ffffff 100%); }
 .game-card.defense { border: 3px solid #2563eb; background: linear-gradient(180deg, #dbeafe 0%, #ffffff 100%); }
 
-.card-top { display: flex; justify-content: space-between; align-items: center; }
-
 .card-cost-gem {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -7px;
+  right: -7px;
   background: #0284c7;
   color: #fff;
   border: 2px solid #fff;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
-.card-title { font-size: 0.65rem; color: #0f172a; text-align: center; font-weight: bold; width: 100%; }
-.card-art { font-size: 1.6rem; text-align: center; margin: 4px 0; }
+.card-title { font-size: 0.62rem; color: #0f172a; text-align: center; font-weight: bold; width: 100%; margin-top: 2px; }
+.card-art { font-size: 1.5rem; text-align: center; margin: 3px 0; }
 .card-art.attack { color: #dc2626; }
 .card-art.defense { color: #2563eb; }
-.card-desc { font-size: 0.52rem; color: #334155; text-align: center; line-height: 1.1; font-weight: 500; }
+.card-desc { font-size: 0.5rem; color: #334155; text-align: center; line-height: 1.1; font-weight: 500; margin-bottom: 2px; }
