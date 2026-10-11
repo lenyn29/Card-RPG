@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Card RPG: Clon Card Guardians</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css?v=9">
+  <link rel="stylesheet" href="style.css?v=10">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4a7c59">
 </head>
@@ -35,7 +35,7 @@
       <span id="toast-text">¡Notificación!</span>
     </div>
 
-    <!-- CUADRANTE SUPERIOR: ZONA DE ENEMIGOS -->
+    <!-- ZONA ENEMIGOS (FILAS 1 Y 2) -->
     <section class="top-enemy-zone">
       <div class="enemy-status-floating">
         <span class="enemy-name" id="enemy-name">Cargando...</span>
@@ -56,10 +56,10 @@
       </div>
     </section>
 
-    <!-- CUADRANTE INFERIOR: HÉROE, CARTAS Y HUD DE ACCIÓN -->
+    <!-- ZONA HÉROE (FILAS 3 Y 4) -->
     <section class="bottom-hero-zone">
       
-      <!-- 1. HUD DEL HÉROE (SALUD A LA IZQ, ESPECIAL A LA DER) -->
+      <!-- HUD DEL HÉROE -->
       <div class="mid-hero-hud-row">
         <div class="hero-card-guardians-hud">
           <div class="hero-portrait">
@@ -82,10 +82,10 @@
         </div>
       </div>
 
-      <!-- 2. MANO DE CARTAS AMPLIADA AL ANCHO COMPLETO -->
+      <!-- MANO DE CARTAS CON PROPORCIÓN 1:2 -->
       <div class="cards-hand-viewport" id="player-hand"></div>
 
-      <!-- 3. CONTROLES FINALES (HASTA ABAJO) -->
+      <!-- CONTROLES FINALES INFERIORES -->
       <div class="bottom-action-area">
         <div class="piles-energy-row">
           <div class="deck-orb-pile" title="Mazo">
@@ -108,7 +108,7 @@
 
   </div>
 
-  <script src="app.js?v=9"></script>
+  <script src="app.js?v=10"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js');

@@ -97,15 +97,16 @@ body {
 .toast-banner.hidden { opacity: 0; pointer-events: none; }
 
 /* ==========================================
-   ZONA SUPERIOR: ENEMIGOS (AJUSTADO A LA MITAD DE FILA 2)
+   ZONA ENEMIGOS (FILAS 1 Y 2)
+   El piso/sombra se posiciona exactamente a la mitad de la fila 2
    ========================================== */
 .top-enemy-zone {
   height: 50dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end; /* Empuja el sprite hacia la línea media */
-  padding-bottom: 15px; /* Control de tope a la mitad de la 2da fila */
+  justify-content: flex-start;
+  padding-top: max(15px, env(safe-area-inset-top));
   position: relative;
   z-index: 10;
 }
@@ -116,7 +117,7 @@ body {
   border-radius: 10px;
   padding: 4px 10px;
   text-align: center;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }
 
 .enemy-name { font-size: 0.72rem; font-weight: bold; color: #fca5a5; display: block; margin-bottom: 1px; }
@@ -151,12 +152,20 @@ body {
   cursor: pointer;
 }
 
-.monster-wrapper { display: flex; flex-direction: column; align-items: center; margin-top: 5px; }
-.monster-img { width: 130px; height: 130px; object-fit: contain; filter: drop-shadow(0 5px 8px rgba(0,0,0,0.3)); }
-.shadow-platform { width: 90px; height: 12px; background: radial-gradient(ellipse, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 70%); margin-top: -10px; }
+.monster-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 37.5dvh; /* Coloca la base exactamente en la mitad de la fila 2 (37.5% de 100dvh) */
+  transform: translateY(-100%); /* Crece hacia arriba desde el piso */
+}
+
+.monster-img { width: 120px; height: 120px; object-fit: contain; filter: drop-shadow(0 5px 8px rgba(0,0,0,0.3)); }
+.shadow-platform { width: 85px; height: 12px; background: radial-gradient(ellipse, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 70%); margin-top: -10px; }
 
 /* ==========================================
-   ZONA INFERIOR: HÉROE, CARTAS Y HUD
+   ZONA HÉROE (FILAS 3 Y 4)
    ========================================== */
 .bottom-hero-zone {
   height: 50dvh;
@@ -242,21 +251,20 @@ body {
 .special-icon { color: #fff; font-size: 1rem; }
 .special-count { font-size: 0.5rem; font-weight: bold; color: #fff; margin-top: -1px; }
 
-/* MANO DE CARTAS AMPLIADA: OCUPA EL ANCHO DE LA PANTALLA */
+/* MANO DE CARTAS CON PROPORCIÓN ALTO = 2 X ANCHO (1:2) */
 .cards-hand-viewport {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
   width: 100%;
-  min-height: 145px;
-  padding: 4px 0;
+  padding: 2px 0;
   background: transparent;
 }
 
 .game-card {
-  flex: 1; /* Distribución uniforme para ocupar todo el ancho disponible */
-  height: 140px;
+  flex: 1;
+  aspect-ratio: 1 / 2; /* El alto es exactamente el doble del ancho */
   border-radius: 12px;
   padding: 6px;
   display: flex;
@@ -289,12 +297,12 @@ body {
 }
 
 .card-title { font-size: 0.7rem; color: #0f172a; text-align: center; font-weight: bold; width: 100%; margin-top: 2px; }
-.card-art { font-size: 1.6rem; text-align: center; margin: 4px 0; }
+.card-art { font-size: 1.8rem; text-align: center; margin: 4px 0; }
 .card-art.attack { color: #dc2626; }
 .card-art.defense { color: #2563eb; }
 .card-desc { font-size: 0.55rem; color: #334155; text-align: center; line-height: 1.15; font-weight: 500; }
 
-/* FOOTER INFERIOR (HASTA ABAJO) */
+/* FOOTER INFERIOR */
 .bottom-action-area {
   width: 100%;
 }
