@@ -5,19 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Card RPG: Clon Card Guardians</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css?v=10">
+  <link rel="stylesheet" href="style.css?v=11">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4a7c59">
 </head>
 <body>
   <div class="game-shell unified-bg" id="game-shell">
     
-    <!-- CUADRÍCULA GUÍA 4X4 (ACTIVABLE) -->
-    <div class="grid-guide-4x4 hidden" id="grid-guide">
+    <!-- CUADRÍCULA GUÍA 8 FILAS X 4 COLUMNAS -->
+    <div class="grid-guide-8x4 hidden" id="grid-guide">
       <div class="grid-cell">1,1</div><div class="grid-cell">1,2</div><div class="grid-cell">1,3</div><div class="grid-cell">1,4</div>
       <div class="grid-cell">2,1</div><div class="grid-cell">2,2</div><div class="grid-cell">2,3</div><div class="grid-cell">2,4</div>
       <div class="grid-cell">3,1</div><div class="grid-cell">3,2</div><div class="grid-cell">3,3</div><div class="grid-cell">3,4</div>
       <div class="grid-cell">4,1</div><div class="grid-cell">4,2</div><div class="grid-cell">4,3</div><div class="grid-cell">4,4</div>
+      <div class="grid-cell">5,1</div><div class="grid-cell">5,2</div><div class="grid-cell">5,3</div><div class="grid-cell">5,4</div>
+      <div class="grid-cell">6,1</div><div class="grid-cell">6,2</div><div class="grid-cell">6,3</div><div class="grid-cell">6,4</div>
+      <div class="grid-cell">7,1</div><div class="grid-cell">7,2</div><div class="grid-cell">7,3</div><div class="grid-cell">7,4</div>
+      <div class="grid-cell">8,1</div><div class="grid-cell">8,2</div><div class="grid-cell">8,3</div><div class="grid-cell">8,4</div>
     </div>
 
     <!-- BOTONES DE HERRAMIENTAS SUPERIORES -->
@@ -35,7 +39,7 @@
       <span id="toast-text">¡Notificación!</span>
     </div>
 
-    <!-- ZONA ENEMIGOS (FILAS 1 Y 2) -->
+    <!-- ZONA ENEMIGO (FILAS 1 A 4) -->
     <section class="top-enemy-zone">
       <div class="enemy-status-floating">
         <span class="enemy-name" id="enemy-name">Cargando...</span>
@@ -56,10 +60,10 @@
       </div>
     </section>
 
-    <!-- ZONA HÉROE (FILAS 3 Y 4) -->
+    <!-- ZONA HÉROE (FILAS 5 A 8) -->
     <section class="bottom-hero-zone">
       
-      <!-- HUD DEL HÉROE -->
+      <!-- HUD DEL HÉROE (FILA 5) -->
       <div class="mid-hero-hud-row">
         <div class="hero-card-guardians-hud">
           <div class="hero-portrait">
@@ -82,10 +86,10 @@
         </div>
       </div>
 
-      <!-- MANO DE CARTAS CON PROPORCIÓN 1:2 -->
+      <!-- MANO DE CARTAS (FILAS 6 Y 7) -->
       <div class="cards-hand-viewport" id="player-hand"></div>
 
-      <!-- CONTROLES FINALES INFERIORES -->
+      <!-- CONTROLES FINALES INFERIORES (FILA 8) -->
       <div class="bottom-action-area">
         <div class="piles-energy-row">
           <div class="deck-orb-pile" title="Mazo">
@@ -108,7 +112,7 @@
 
   </div>
 
-  <script src="app.js?v=10"></script>
+  <script src="app.js?v=11"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js');

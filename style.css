@@ -28,8 +28,8 @@ body {
   z-index: 1;
 }
 
-/* CUADRÍCULA GUÍA 4X4 */
-.grid-guide-4x4 {
+/* CUADRÍCULA GUÍA 8 FILAS X 4 COLUMNAS */
+.grid-guide-8x4 {
   position: absolute;
   top: 0;
   left: 0;
@@ -37,7 +37,7 @@ body {
   height: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-rows: repeat(8, 1fr);
   z-index: 99;
   pointer-events: none;
 }
@@ -48,12 +48,12 @@ body {
   align-items: flex-start;
   justify-content: flex-start;
   padding: 2px;
-  font-size: 0.55rem;
+  font-size: 0.5rem;
   color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.02);
 }
 
-.grid-guide-4x4.hidden { display: none; }
+.grid-guide-8x4.hidden { display: none; }
 
 .top-tools-bar {
   position: absolute;
@@ -96,10 +96,7 @@ body {
 
 .toast-banner.hidden { opacity: 0; pointer-events: none; }
 
-/* ==========================================
-   ZONA ENEMIGOS (FILAS 1 Y 2)
-   El piso/sombra se posiciona exactamente a la mitad de la fila 2
-   ========================================== */
+/* ZONA ENEMIGOS (FILAS 1 A 4 - PISO EN EL FINAL DE FILA 3) */
 .top-enemy-zone {
   height: 50dvh;
   display: flex;
@@ -117,7 +114,6 @@ body {
   border-radius: 10px;
   padding: 4px 10px;
   text-align: center;
-  margin-bottom: 2px;
 }
 
 .enemy-name { font-size: 0.72rem; font-weight: bold; color: #fca5a5; display: block; margin-bottom: 1px; }
@@ -157,16 +153,14 @@ body {
   flex-direction: column;
   align-items: center;
   position: absolute;
-  top: 37.5dvh; /* Coloca la base exactamente en la mitad de la fila 2 (37.5% de 100dvh) */
-  transform: translateY(-100%); /* Crece hacia arriba desde el piso */
+  top: 37.5dvh; /* Piso fijado al final de la 3ra fila */
+  transform: translateY(-100%);
 }
 
 .monster-img { width: 120px; height: 120px; object-fit: contain; filter: drop-shadow(0 5px 8px rgba(0,0,0,0.3)); }
 .shadow-platform { width: 85px; height: 12px; background: radial-gradient(ellipse, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 70%); margin-top: -10px; }
 
-/* ==========================================
-   ZONA HÉROE (FILAS 3 Y 4)
-   ========================================== */
+/* ZONA HÉROE (FILAS 5 A 8) */
 .bottom-hero-zone {
   height: 50dvh;
   display: flex;
@@ -251,20 +245,23 @@ body {
 .special-icon { color: #fff; font-size: 1rem; }
 .special-count { font-size: 0.5rem; font-weight: bold; color: #fff; margin-top: -1px; }
 
-/* MANO DE CARTAS CON PROPORCIÓN ALTO = 2 X ANCHO (1:2) */
+/* CONTENEDOR Y PROPORCIÓN PERFECTA DE CARTAS (NO DEFORMABLES) */
 .cards-hand-viewport {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 10px;
   width: 100%;
-  padding: 2px 0;
+  padding: 4px 0;
   background: transparent;
 }
 
 .game-card {
-  flex: 1;
-  aspect-ratio: 1 / 2; /* El alto es exactamente el doble del ancho */
+  width: 95px;
+  max-width: 110px;
+  height: 140px;
+  max-height: 140px; /* Previene la deformación si hay menos cartas */
+  flex-shrink: 0;
   border-radius: 12px;
   padding: 6px;
   display: flex;
