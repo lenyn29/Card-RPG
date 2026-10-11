@@ -26,7 +26,6 @@ body {
   overflow: hidden;
 }
 
-/* FONDO ESTILO PRADERA Y MONTAÑAS DE CARD GUARDIANS */
 .meadow-bg {
   position: absolute;
   top: 0;
@@ -42,7 +41,7 @@ body {
   top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(20, 20, 20, 0.9);
+  background: rgba(20, 20, 20, 0.92);
   border: 2px solid #facc15;
   color: #fff;
   padding: 10px 20px;
@@ -55,7 +54,6 @@ body {
 
 .toast-banner.hidden { opacity: 0; pointer-events: none; }
 
-/* ÁREA CENTRAL DE COMBATE */
 .battle-arena {
   position: relative;
   z-index: 5;
@@ -68,7 +66,6 @@ body {
   padding-top: max(20px, env(safe-area-inset-top));
 }
 
-/* ENEMIGO CON HP ARRIBA */
 .enemy-container {
   display: flex;
   flex-direction: column;
@@ -111,19 +108,19 @@ body {
   padding: 4px 10px;
   border-radius: 18px;
   font-weight: bold;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
   display: flex;
   align-items: center;
   gap: 4px;
   z-index: 10;
+  cursor: pointer;
 }
 
 .monster-wrapper { display: flex; flex-direction: column; align-items: center; margin-top: 15px; }
 .monster-img { width: 150px; height: 150px; object-fit: contain; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4)); }
 .shadow-platform { width: 110px; height: 16px; background: radial-gradient(ellipse, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 70%); margin-top: -15px; }
 
-/* ESTADÍSTICAS DEL HÉROE ABAJO ESTILO CARD GUARDIANS */
 .hero-stats-row {
   width: 100%;
   display: flex;
@@ -165,7 +162,6 @@ body {
   gap: 4px;
 }
 
-/* FOOTER Y MANO DE CARTAS ESTILO CARD GUARDIANS */
 .battle-footer {
   position: relative;
   z-index: 10;
@@ -229,7 +225,6 @@ body {
   padding: 6px 0;
 }
 
-/* ESTILO DE CARTAS CARD GUARDIANS (MARCO ROJO ATAQUE / AZUL DEFENSA) */
 .game-card {
   width: 90px;
   height: 130px;
@@ -245,15 +240,8 @@ body {
   background: #f8fafc;
 }
 
-.game-card.attack {
-  border: 3px solid #dc2626;
-  background: linear-gradient(180deg, #fee2e2 0%, #ffffff 100%);
-}
-
-.game-card.defense {
-  border: 3px solid #2563eb;
-  background: linear-gradient(180deg, #dbeafe 0%, #ffffff 100%);
-}
+.game-card.attack { border: 3px solid #dc2626; background: linear-gradient(180deg, #fee2e2 0%, #ffffff 100%); }
+.game-card.defense { border: 3px solid #2563eb; background: linear-gradient(180deg, #dbeafe 0%, #ffffff 100%); }
 
 .card-top { display: flex; justify-content: space-between; align-items: center; }
 
