@@ -15,7 +15,7 @@ export class AssetManager {
         this.images[name] = img;
         resolve(img);
       };
-      img.onerror = () => reject(`Error cargando imagen: ${url}`);
+      img.onerror = () => reject(new Error(`No se pudo cargar la imagen: ${url}`));
     });
   }
 
@@ -24,4 +24,5 @@ export class AssetManager {
   }
 }
 
+// Exportamos una instancia única (Singleton) para todo el juego
 export const Assets = new AssetManager();
