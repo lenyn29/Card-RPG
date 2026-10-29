@@ -7,15 +7,15 @@ export class Camera {
   }
 
   follow(target, mapWidth, mapHeight) {
-    // Centrar en el objetivo
+    // Calcular la posición deseada de la cámara centrada en el objetivo
     let targetX = target.pos.x + target.size.x / 2 - this.width / 2;
     let targetY = target.pos.y + target.size.y / 2 - this.height / 2;
 
-    // Smooth lerp (Suavizado)
+    // Efecto Smooth Lerp (0.1 suaviza el movimiento de seguimiento)
     this.x += (targetX - this.x) * 0.1;
     this.y += (targetY - this.y) * 0.1;
 
-    // Bloqueo de límites del mapa
+    // Restringir la cámara para que no rebase los límites del mapa
     this.x = Math.max(0, Math.min(this.x, mapWidth - this.width));
     this.y = Math.max(0, Math.min(this.y, mapHeight - this.height));
   }

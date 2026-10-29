@@ -2,101 +2,106 @@ export class TouchController {
   constructor() {
     this.dir = { x: 0, y: 0 };
     this.actionAttack = false;
-    this.actionInteract = false;
 
-    // Estado del Joystick
-    this.joystickActive = false;
-    this.joystickCenter = { x: 0, y: 0 };
-    this.joystickPos = { x: 0, y: 0 };
-    this.maxRadius = 40; // Radio máximo de desplazamiento del joystick
-
-    this.createUI();
-    this.bindEvents();
+    this.createTouchUI();
+    this.initListeners();
   }
 
-  createUI() {
-    // Contenedor principal de controles táctiles superpuesto al canvas
-    this.container = document.createElement('div');
-    this.container.id = 'touch-controls';
-    this.container.innerHTML = `
-      <div id="joystick-base">
-        <div id="joystick-stick"></div>
-      </div>
-      <div id="action-buttons">
-        <button id="btn-attack" class="action-btn">⚔️</button>
-        <button id="btn-interact" class="action-btn">💬</button>
-      </div>
-    `;
-    document.body.appendChild(this.container);
+  createTouchUI() {
+    // Contenedor general táctil
+    const container = document.createElement('div');
+    container.id = 'touch-controls';
+
+    // Joystick Base
+    const joystickBase = document.createElement('div');
+    joystickBase.id = 'joystick-base';
+    
+    const joystickStick = document.createElement('div');
+    joystickStick.id = 'joystick-stick';
+    joystickBase.appendChild(joystickStick);
+    container.appendChild(joystickBase);
+
+    // Contenedor de Botones de Acción (Solo Ataque)
+    const actionContainer = document.createElement('div');
+    actionContainer.id = 'action-buttons';
+
+    // Único botón: Ataque
+    const attackBtn = document.createElement('button');
+    attackBtn.className = 'action-btn';
+    attackBtn.id = 'btn-attack';
+    attackBtn.innerHTML = '⚔️';
+    
+    actionContainer.appendChild(attackBtn);
+    container.appendChild(actionContainer);
+
+    document.body.appendChild(container);
+
+    this.joystickBase = joystickBase;
+    this.joystickStick = joystickStick;
+    this.attackBtn = attackBtn;
   }
 
-  bindEvents() {
-    const base = document.getElementById('joystick-base');
-    const stick = document.getElementById('joystick-stick');
-    const btnAttack = document.getElementById('btn-attack');
-    const btnInteract = document.getElementById('btn-interact');
+  initListeners() {
+    let joystickCenter = { x: 0, y: 0 };
+    let touchId = null;
+    const maxDist = 45;
 
-    // --- LÓGICA DEL JOYSTICK TÁCTIL ---
-    base.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      const touch = e.touches[0];
-      const rect = base.getBoundingClientRect();
-      this.joystickCenter = {
+    // Control del Joystick
+    this.joystickBase.addEventListener('pointerdown', (e) => {
+      const rect = this.joystickBase.getBoundingClientRect();
+      joystickCenter = {
         x: rect.left + rect.width / 2,
         y: rect.top + rect.height / 2
       };
-      this.joystickActive = true;
-      this.updateJoystick(touch.clientX, touch.clientY, stick, base);
-    }, { passive: false });
-
-    window.addEventListener('touchmove', (e) => {
-      if (!this.joystickActive) return;
-      e.preventDefault();
-      const touch = e.touches[0];
-      this.updateJoystick(touch.clientX, touch.clientY, stick, base);
-    }, { passive: false });
-
-    window.addEventListener('touchend', (e) => {
-      if (!this.joystickActive) return;
-      this.joystickActive = false;
-      this.dir = { x: 0, y: 0 };
-      stick.style.transform = `translate(0px, 0px)`;
+      touchId = e.pointerId;
+      this.updateJoystick(e.clientX, e.clientY, joystickCenter, maxDist);
     });
 
-    // --- LÓGICA DE BOTONES ---
-    btnAttack.addEventListener('touchstart', (e) => {
+    window.addEventListener('pointermove', (e) => {
+      if (touchId !== null && e.pointerId === touchId) {
+        this.updateJoystick(e.clientX, e.clientY, joystickCenter, maxDist);
+      }
+    });
+
+    const releaseJoystick = (e) => {
+      if (touchId !== null && e.pointerId === touchId) {
+        touchId = null;
+        this.dir = { x: 0, y: 0 };
+        this.joystickStick.style.transform = `translate(0px, 0px)`;
+      }
+    };
+
+    window.addEventListener('pointerup', releaseJoystick);
+    window.addEventListener('pointercancel', releaseJoystick);
+
+    // Botón de Ataque único
+    this.attackBtn.addEventListener('pointerdown', (e) => {
       e.preventDefault();
       this.actionAttack = true;
     });
-    btnAttack.addEventListener('touchend', () => { this.actionAttack = false; });
 
-    btnInteract.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      this.actionInteract = true;
-    });
-    btnInteract.addEventListener('touchend', () => { this.actionInteract = false; });
+    const releaseAttack = (e) => {
+      this.actionAttack = false;
+    };
+
+    this.attackBtn.addEventListener('pointerup', releaseAttack);
+    this.attackBtn.addEventListener('pointerleave', releaseAttack);
   }
 
-  updateJoystick(clientX, clientY, stick, base) {
-    let dx = clientX - this.joystickCenter.x;
-    let dy = clientY - this.joystickCenter.y;
-    const distance = Math.hypot(dx, dy);
+  updateJoystick(clientX, clientY, center, maxDist) {
+    let dx = clientX - center.x;
+    let dy = clientY - center.y;
+    let dist = Math.hypot(dx, dy);
 
-    // Limitar al radio máximo del joystick
-    if (distance > this.maxRadius) {
-      dx = (dx / distance) * this.maxRadius;
-      dy = (dy / distance) * this.maxRadius;
+    if (dist > maxDist) {
+      dx = (dx / dist) * maxDist;
+      dy = (dy / dist) * maxDist;
     }
 
-    // Mover visualmente el stick en pantalla
-    stick.style.transform = `translate(${dx}px, ${dy}px)`;
+    this.joystickStick.style.transform = `translate(${dx}px, ${dy}px)`;
 
-    // Normalizar la dirección para el movimiento del jugador (-1 a 1)
-    this.dir.x = dx / this.maxRadius;
-    this.dir.y = dy / this.maxRadius;
-
-    // Aplicar un pequeño umbral (deadzone) para evitar drift
-    if (Math.abs(this.dir.x) < 0.15) this.dir.x = 0;
-    if (Math.abs(this.dir.y) < 0.15) this.dir.y = 0;
+    // Normalizar dirección para el movimiento del jugador
+    this.dir.x = dist > 5 ? dx / maxDist : 0;
+    this.dir.y = dist > 5 ? dy / maxDist : 0;
   }
 }

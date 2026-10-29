@@ -13,8 +13,7 @@ export class FullscreenManager {
         <button id="start-btn">¡Jugar Ahora!</button>
       </div>
     `;
-    
-    // Estilos inline del splash overlay
+
     Object.assign(this.splash.style, {
       position: 'fixed',
       top: '0', left: '0', width: '100vw', height: '100vh',
@@ -46,7 +45,6 @@ export class FullscreenManager {
 
     btn.addEventListener('click', () => {
       this.requestFullscreen();
-      this.lockLandscape();
       this.splash.remove();
       if (onReady) onReady();
     });
@@ -54,17 +52,16 @@ export class FullscreenManager {
 
   requestFullscreen() {
     const elem = document.documentElement;
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen().catch(err => console.log(err));
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen();
-    }
-  }
-
-  lockLandscape() {
-    if (screen.orientation && screen.orientation.lock) {
-      screen.orientation.lock('landscape').catch(() => {
-        // Algunos navegadores móviles bloquean el lock si no está instalado como PWA
+    const requestMethod = elem.requestFullscreen || elem.webkitRequestFullscreen || elem.mozRequestFullScreen || elem.msRequestFullscreen;
+    
+    if (requestMethod) {
+      requestMethod.call(elem).then(() => {
+        // Intentar bloquear orientación a horizontal de forma segura
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(() => {});
+        }
+      }).catch(err => {
+        console.warn("Fullscreen denegado o no soportado por políticas del navegador:", err);
       });
     }
   }
