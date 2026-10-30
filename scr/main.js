@@ -189,12 +189,14 @@ async function initGame() {
       Assets.loadImage('slime', './assets/sprites/slime.png')
     ]);
 
+// Registrar el Service Worker para la PWA
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(err => {
-        console.warn('Service Worker no registrado:', err);
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
+          .catch(err => console.log('Error al registrar el Service Worker:', err));
       });
     }
-
     new FullscreenManager(() => {
       const game = new Game();
       game.start();
